@@ -1,0 +1,16 @@
+# The plaintext invitation details. NEVER commit this — assets/data/invitation.enc
+# is the encrypted form and is the only version that belongs in the repo.
+content.json
+
+# Reference frames of the original template; not ours to republish.
+design/
+
+# local scratch
+__pycache__/
+*.pyc
+preview.html
+harness.html
+itest.html
+gtest.html
+cover-harness.html
+.work/

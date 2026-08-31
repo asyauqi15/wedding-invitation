@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Undangan Pernikahan</title>
+<meta name="description" content="Undangan pernikahan.">
+<meta name="theme-color" content="#261016">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Undangan Pernikahan">
+<meta property="og:description" content="Undangan pernikahan.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="is-locked">
+
+<!-- backdrop: soft drifting glows, a damask lattice and film grain sit behind
+     everything; petals are added by main.js so reduced-motion can opt out -->
+<div class="bg" aria-hidden="true">
+  <span class="bg__glow bg__glow--a"></span>
+  <span class="bg__glow bg__glow--b"></span>
+  <span class="bg__glow bg__glow--c"></span>
+  <div class="petals" id="petals"></div>
+</div>
+
+<!-- =============================== gate ============================== -->
+<section class="gate" id="gate">
+  <div class="gate__panel">
+    <p class="gate__mark" aria-hidden="true">&#9993;</p>
+    <h1 class="gate__title">Undangan Pernikahan</h1>
+    <p class="gate__hint">Undangan ini masih tertutup.<br>Silakan masukkan kata sandi dari pengundang.</p>
+
+    <form class="gate__form" id="gateForm" novalidate>
+      <label class="sr-only" for="gateKey">Kata sandi undangan</label>
+      <input id="gateKey" type="password" placeholder="Kata sandi" autocomplete="current-password"
+             autocapitalize="off" autocorrect="off" spellcheck="false" required>
+      <button class="btn btn--gold" type="submit" id="gateBtn">Buka</button>
+      <p class="gate__note" id="gateNote" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============================== cover ============================== -->
+<section class="cover" id="cover">
+  <div class="cover__art">
+    <!-- layered exactly as the printed piece stacks: open envelope at the back,
+         florals tucked behind the card, the card itself, then the front pocket -->
+    <div class="env">
+      <img class="env__back" src="assets/img/envelope-open.webp" alt="" width="1013" height="1168">
+      <img class="env__spray env__spray--l" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+      <img class="env__spray env__spray--r" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+
+      <div class="env__card">
+        <p class="eyebrow">The Wedding of</p>
+        <h1 class="script script--card" data-field="coupleShort">•••</h1>
+        <span class="env__rule" aria-hidden="true"></span>
+        <p class="env__date" data-field="dateLong">•••</p>
+      </div>
+
+      <img class="env__front" src="assets/img/envelope-flap.webp" alt="" width="1013" height="668">
+    </div>
+  </div>
+
+  <div class="cover__body">
+    <div class="cover__guest">
+      <p class="cover__to">Kepada Bapak/Ibu/Saudara/i</p>
+      <p class="cover__name" id="guestName">Tamu Undangan</p>
+    </div>
+
+    <button class="btn btn--gold" id="openBtn" type="button">
+      <span class="btn__icon" aria-hidden="true">&#9993;</span> Buka Undangan
+    </button>
+  </div>
+</section>
+
+<!-- ============================ invitation =========================== -->
+<main class="invite" id="invite" aria-hidden="true">
+
+  <section class="sec sec--quote" id="quote">
+    <img class="deco deco--tl" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+    <div class="note" data-reveal="zoom">
+      <p class="note__ref">QS. Ar-Rum Ayat 21</p>
+      <p class="arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ</p>
+      <p class="note__body">&ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;</p>
+    </div>
+  </section>
+
+  <div class="ornament" aria-hidden="true"></div>
+
+  <section class="sec" id="couple">
+    <p class="bismillah" data-reveal>بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <p class="lede" data-reveal>Assalamu&rsquo;alaikum Warahmatullahi Wabarakatuh</p>
+    <p class="body" data-reveal>Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami.</p>
+
+    <div class="couple">
+      <article class="person" data-reveal="left">
+        <h2 class="script script--lg" data-field="brideName">•••</h2>
+        <p class="person__meta" data-field="brideParents">•••</p>
+      </article>
+
+      <div class="amp" data-reveal="zoom" aria-hidden="true">&amp;</div>
+
+      <article class="person" data-reveal="right">
+        <h2 class="script script--lg" data-field="groomName">•••</h2>
+        <p class="person__meta" data-field="groomParents">•••</p>
+      </article>
+    </div>
+  </section>
+
+  <div class="ornament" aria-hidden="true"></div>
+
+  <section class="sec sec--date" id="date">
+    <img class="deco deco--tr" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+    <p class="script script--lg" data-reveal>Save the Date</p>
+    <p class="bigdate" data-reveal>
+      <span class="bigdate__dow" data-field="dow">•••</span>
+      <span class="bigdate__day" data-field="day">•••</span>
+      <span class="bigdate__my" data-field="monthYear">•••</span>
+    </p>
+    <ul class="count" id="countdown" data-reveal aria-label="Hitung mundur menuju hari pernikahan">
+      <li><b data-cd="d">0</b><span>Hari</span></li>
+      <li><b data-cd="h">0</b><span>Jam</span></li>
+      <li><b data-cd="m">0</b><span>Menit</span></li>
+      <li><b data-cd="s">0</b><span>Detik</span></li>
+    </ul>
+    <button class="btn btn--outline" id="calBtn" type="button">Simpan ke Kalender</button>
+  </section>
+
+  <section class="sec" id="event">
+    <div class="events">
+      <article class="event" data-reveal>
+        <img class="event__icon" src="assets/img/icon-cake.webp" alt="" aria-hidden="true">
+        <h3>Resepsi Pernikahan</h3>
+        <p class="event__time" data-field="resepsiTime">•••</p>
+      </article>
+    </div>
+
+    <div class="venue" data-reveal="zoom">
+      <img class="venue__art" src="assets/img/venue.webp" alt="" aria-hidden="true">
+      <h3 class="venue__name" data-field="venueName">•••</h3>
+      <p class="venue__addr" data-field="venueAddress">•••</p>
+      <a class="btn btn--gold" id="mapBtn" href="#" target="_blank" rel="noopener">Lihat Lokasi</a>
+    </div>
+  </section>
+
+  <div class="ornament" aria-hidden="true"></div>
+
+  <section class="sec sec--gift" id="gift">
+    <img class="gift__art" src="assets/img/gift.webp" alt="" data-reveal="zoom">
+    <h2 class="script script--lg" data-reveal>Amplop Digital</h2>
+    <p class="body" data-reveal>Doa restu Anda adalah hadiah terindah. Namun bila berkenan memberi tanda kasih, kami sediakan kanal berikut.</p>
+    <ul class="accounts" id="accounts" data-reveal></ul>
+  </section>
+
+  <section class="sec" id="wishes">
+    <h2 class="script script--lg" data-reveal>Ucapan &amp; Doa</h2>
+    <form class="wishform" id="wishForm" data-reveal novalidate>
+      <label class="sr-only" for="wName">Nama</label>
+      <input id="wName" name="name" type="text" placeholder="Nama Anda" required maxlength="60" autocomplete="name">
+
+      <label class="sr-only" for="wAttend">Konfirmasi kehadiran</label>
+      <select id="wAttend" name="attend" required>
+        <option value="">Konfirmasi kehadiran&hellip;</option>
+        <option value="hadir">Insya Allah hadir</option>
+        <option value="ragu">Masih ragu</option>
+        <option value="absen">Berhalangan hadir</option>
+      </select>
+
+      <label class="sr-only" for="wMsg">Ucapan</label>
+      <textarea id="wMsg" name="message" rows="3" placeholder="Tulis ucapan &amp; doa&hellip;" required maxlength="500"></textarea>
+
+      <button class="btn btn--gold" type="submit">Kirim Ucapan</button>
+      <p class="wishform__note" id="wishNote" role="status"></p>
+    </form>
+    <ul class="wishlist" id="wishList" data-reveal></ul>
+  </section>
+
+  <div class="ornament" aria-hidden="true"></div>
+
+  <section class="sec sec--closing" id="closing">
+    <img class="deco deco--bl" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+    <p class="body" data-reveal>Merupakan sebuah kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu kepada kami.</p>
+    <p class="lede" data-reveal>Wassalamu&rsquo;alaikum Warahmatullahi Wabarakatuh</p>
+    <p class="closing__from" data-reveal>Kami yang berbahagia,</p>
+    <p class="script script--xl" data-reveal data-field="coupleShort">•••</p>
+  </section>
+
+  <footer class="foot">
+    <p>Dibuat dengan sepenuh hati &middot; <span data-field="coupleShort">•••</span></p>
+  </footer>
+</main>
+
+<button class="music" id="musicBtn" type="button" hidden aria-pressed="false" aria-label="Putar musik">
+  <span class="music__disc" aria-hidden="true">&#9835;</span>
+</button>
+<audio id="audio" loop preload="none"></audio>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
