@@ -3,20 +3,28 @@
    Palette and type sampled from the Minimalism Dark Red artwork.
    ========================================================================== */
 
+/* Palette taken from the Minimalism Dark Red artwork: the "dark red" is the
+   lettering, not the ground. The page is warm parchment; burgundy carries the
+   type and gold is reserved for small accents. */
 :root {
-  --ink:        #1d0b11;
-  --wine-950:   #261016;   /* lifted off black so the page reads warm, not harsh */
-  --wine-900:   #3a1620;
-  --wine-800:   #52202b;
-  --wine-700:   #6b2c37;
-  --rose:       #b4707a;
-  --gold:       #c9a961;
-  --gold-soft:  #e6d3a3;
-  --gold-dim:   #8d7440;
-  --cream:      #f5f1e6;
-  --cream-dim:  #d9cfbc;
+  --parchment:    #ece4d8;
+  --parchment-lt: #f7f2e9;
+  --surface:      rgba(255, 255, 255, .58);
 
-  --ink-on-paper: #3a2018;
+  --ink:       #511419;                  /* burgundy — the dominant type colour */
+  --ink-deep:  #3f0d13;
+  --ink-soft:  rgba(81, 20, 25, .78);
+  --ink-faint: rgba(81, 20, 25, .52);
+  --rule:      rgba(81, 20, 25, .30);
+
+  --gold:      #b58b2f;
+  --gold-soft: #d3ab55;
+  --gold-dim:  #8d7440;
+
+  --cream:     #f2ece1;                  /* type that sits on burgundy */
+  --rose:      #b4707a;
+
+  --ink-on-paper: #511419;
   --paper: url("../img/paper.webp") center / cover no-repeat;
 
   --shell: 30rem;          /* the invitation reads as a single tall card    */
@@ -44,21 +52,22 @@ body {
   font-family: var(--f-serif);
   font-size: clamp(1rem, .95rem + .3vw, 1.125rem);
   line-height: 1.75;
-  color: var(--cream);
-  background: var(--wine-950);
+  color: var(--ink);
+  background: var(--parchment);
   overflow-x: clip;
 }
 
 /* --- backdrop ------------------------------------------------------------
-   Four quiet layers instead of one flat wash: a warm base, drifting glows,
-   a damask lattice and a film grain that kills gradient banding. */
+   Four quiet layers instead of one flat wash: a warm parchment base, drifting
+   tints, a damask lattice and a film grain that keeps the cream from looking
+   like blank paper. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -4;
   background:
-    radial-gradient(130% 80% at 50% -15%, #6b2c37 0%, #3a1620 46%, #261016 78%, #1d0b11 100%);
+    radial-gradient(130% 85% at 50% -10%, #fbf7ef 0%, #f3ece0 42%, #ece4d8 72%, #e2d7c7 100%);
 }
 
 .bg {
@@ -73,26 +82,26 @@ body::before {
 .bg__glow {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: .5;
+  filter: blur(80px);
+  opacity: .55;
   will-change: transform;
 }
 .bg__glow--a {
   width: 62vmax; height: 62vmax;
   top: -22vmax; left: -18vmax;
-  background: radial-gradient(circle, rgba(180, 112, 122, .40), transparent 68%);
+  background: radial-gradient(circle, rgba(180, 112, 122, .22), transparent 68%);
   animation: drift-a 26s ease-in-out infinite alternate;
 }
 .bg__glow--b {
   width: 54vmax; height: 54vmax;
   top: 32%; right: -22vmax;
-  background: radial-gradient(circle, rgba(201, 169, 97, .26), transparent 68%);
+  background: radial-gradient(circle, rgba(181, 139, 47, .20), transparent 68%);
   animation: drift-b 32s ease-in-out infinite alternate;
 }
 .bg__glow--c {
   width: 70vmax; height: 70vmax;
   bottom: -30vmax; left: 8%;
-  background: radial-gradient(circle, rgba(107, 44, 55, .55), transparent 70%);
+  background: radial-gradient(circle, rgba(81, 20, 25, .14), transparent 70%);
   animation: drift-c 38s ease-in-out infinite alternate;
 }
 @keyframes drift-a { to { transform: translate3d(14vmax, 10vmax, 0) scale(1.15); } }
@@ -106,21 +115,21 @@ body::after {
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  opacity: .075;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cg fill='none' stroke='%23e6d3a3' stroke-width='.9'%3E%3Cpath d='M55 7 L103 55 L55 103 L7 55 Z'/%3E%3Cpath d='M55 30 L80 55 L55 80 L30 55 Z'/%3E%3C/g%3E%3Cg fill='%23e6d3a3'%3E%3Ccircle cx='55' cy='55' r='2.4'/%3E%3Ccircle cx='55' cy='7' r='1.7'/%3E%3Ccircle cx='103' cy='55' r='1.7'/%3E%3Ccircle cx='55' cy='103' r='1.7'/%3E%3Ccircle cx='7' cy='55' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cg fill='none' stroke='%23511419' stroke-width='.9'%3E%3Cpath d='M55 7 L103 55 L55 103 L7 55 Z'/%3E%3Cpath d='M55 30 L80 55 L55 80 L30 55 Z'/%3E%3C/g%3E%3Cg fill='%23511419'%3E%3Ccircle cx='55' cy='55' r='2.4'/%3E%3Ccircle cx='55' cy='7' r='1.7'/%3E%3Ccircle cx='103' cy='55' r='1.7'/%3E%3Ccircle cx='55' cy='103' r='1.7'/%3E%3Ccircle cx='7' cy='55' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 110px 110px;
 }
 
-/* grain + vignette, painted above the lattice but under the content */
+/* grain + a warm edge, painted above the lattice but under the content */
 .bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(105% 70% at 50% 42%, transparent 38%, rgba(20, 6, 11, .62) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+    radial-gradient(105% 72% at 50% 40%, transparent 46%, rgba(122, 74, 40, .16) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.30'/%3E%3C/svg%3E");
   background-size: cover, 180px 180px;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: multiply;
 }
 
 /* --- falling petals ------------------------------------------------------ */
@@ -129,7 +138,7 @@ body::after {
   position: absolute;
   top: -8vh;
   border-radius: 62% 6% 62% 6%;
-  background: linear-gradient(135deg, rgba(244, 224, 224, .9), rgba(180, 112, 122, .55));
+  background: linear-gradient(135deg, rgba(180, 112, 122, .75), rgba(81, 20, 25, .5));
   opacity: 0;
   animation-name: fall;
   animation-timing-function: linear;
@@ -138,8 +147,8 @@ body::after {
 }
 @keyframes fall {
   0%   { opacity: 0;   transform: translate3d(0, 0, 0) rotate(0deg); }
-  10%  { opacity: .5; }
-  85%  { opacity: .3; }
+  10%  { opacity: .38; }
+  85%  { opacity: .22; }
   100% { opacity: 0;   transform: translate3d(var(--dx, 6vw), 116vh, 0) rotate(var(--rot, 420deg)); }
 }
 
@@ -159,7 +168,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--f-script);
   font-weight: 400;
   line-height: 1.2;
-  color: var(--gold-soft);
+  color: var(--ink);
   margin: 0;
   overflow-wrap: break-word;
   text-wrap: balance;
@@ -171,7 +180,7 @@ img { max-width: 100%; display: block; }
 @supports (-webkit-background-clip: text) or (background-clip: text) {
   .script:not(.script--card) {
     background-image: linear-gradient(100deg,
-      var(--gold-soft) 18%, #fff4d8 38%, var(--gold) 52%, var(--gold-soft) 72%);
+      var(--ink) 20%, #8a3a30 40%, var(--ink) 58%, var(--ink) 80%);
     background-size: 250% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -199,13 +208,13 @@ img { max-width: 100%; display: block; }
   margin: 0 0 1rem;
   font-size: 1.05em;
   font-style: italic;
-  color: var(--gold-soft);
+  color: var(--ink-soft);
 }
 
 .body {
   margin: 0 auto 1.5rem;
   max-width: 34ch;
-  color: rgba(245, 241, 230, .82);
+  color: var(--ink-soft);
 }
 
 .arabic, .bismillah {
@@ -217,7 +226,7 @@ img { max-width: 100%; display: block; }
 .bismillah {
   margin: 0 0 1.5rem;
   font-size: clamp(1.4rem, 6vw, 1.9rem);
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 
 /* ---------------------------------------------------------------- gate --- */
@@ -234,8 +243,8 @@ img { max-width: 100%; display: block; }
   padding: var(--pad);
   /* a scrim over the cover so the gate reads as one screen, not an overlay */
   background:
-    radial-gradient(120% 70% at 50% 8%, rgba(107, 44, 55, .42), transparent 70%),
-    rgba(24, 9, 14, .72);
+    radial-gradient(120% 70% at 50% 8%, rgba(255, 252, 246, .55), transparent 70%),
+    rgba(236, 228, 216, .86);
   backdrop-filter: blur(7px);
   transition: opacity .6s var(--ease);
 }
@@ -247,14 +256,15 @@ img { max-width: 100%; display: block; }
   text-align: center;
   background: var(--paper);
   border-radius: .35rem;
-  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, .55);
+  border: 1px solid rgba(81, 20, 25, .16);
+  box-shadow: 0 1rem 2.4rem rgba(81, 20, 25, .16);
   position: relative;
 }
 .gate__panel::after {
   content: "";
   position: absolute;
   inset: .55rem;
-  border: 1px solid rgba(141, 116, 64, .45);
+  border: 1px solid var(--rule);
   border-radius: .15rem;
   pointer-events: none;
 }
@@ -271,33 +281,33 @@ img { max-width: 100%; display: block; }
   font-size: 1.3rem;
   font-weight: 600;
   letter-spacing: .04em;
-  color: #4a1218;
+  color: var(--ink);
 }
 .gate__hint {
   margin: 0 0 1.4rem;
   font-size: .92rem;
   line-height: 1.6;
-  color: rgba(58, 32, 24, .78);
+  color: var(--ink-soft);
 }
 
 .gate__form { display: grid; gap: .7rem; }
 .gate__form input {
   width: 100%;
   padding: .8em 1em;
-  border: 1px solid rgba(141, 116, 64, .5);
+  border: 1px solid var(--rule);
   border-radius: .3rem;
-  background: rgba(255, 255, 255, .55);
-  color: var(--ink-on-paper);
+  background: rgba(255, 255, 255, .7);
+  color: var(--ink);
   font: inherit;
   font-size: .98rem;
   text-align: center;
   letter-spacing: .08em;
 }
-.gate__form input::placeholder { color: rgba(58, 32, 24, .42); letter-spacing: .04em; }
+.gate__form input::placeholder { color: var(--ink-faint); letter-spacing: .04em; }
 .gate__form input:focus-visible {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 169, 97, .2);
+  box-shadow: 0 0 0 3px rgba(81, 20, 25, .14);
 }
 .gate__form .btn { justify-self: stretch; }
 .gate__form .btn[disabled] { opacity: .6; cursor: progress; }
@@ -327,7 +337,7 @@ img { max-width: 100%; display: block; }
   text-align: center;
   /* deliberately see-through: .invite is hidden until opened, so the cover does
      not need to mask anything, and the drifting backdrop reads behind it */
-  background: radial-gradient(120% 65% at 50% 6%, rgba(107, 44, 55, .34), transparent 68%);
+  background: radial-gradient(120% 65% at 50% 6%, rgba(255, 252, 246, .5), transparent 68%);
   transition: opacity .9s var(--ease), transform .9s var(--ease);
 }
 
@@ -343,7 +353,7 @@ img { max-width: 100%; display: block; }
   width: min(84vw, 22rem);
   aspect-ratio: 1013 / 1168;
   margin-inline: auto;
-  filter: drop-shadow(0 1.5rem 2.5rem rgba(0, 0, 0, .55));
+  filter: drop-shadow(0 1.1rem 2rem rgba(81, 20, 25, .28));
   animation: float 6s ease-in-out infinite;
 }
 
@@ -380,9 +390,9 @@ img { max-width: 100%; display: block; }
   padding: 1.1rem .85rem 17%;
   background: var(--paper);
   border-radius: .18rem;
-  box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .5);
+  box-shadow: 0 .5rem 1.1rem rgba(81, 20, 25, .28);
   text-align: center;
-  color: var(--ink-on-paper);
+  color: var(--ink);
   transition: translate .85s var(--ease), opacity .5s var(--ease) .35s;
 }
 /* opening pulls the card up and out, then the cover follows it */
@@ -393,48 +403,48 @@ body.is-open .env { animation-play-state: paused; }
   content: "";
   position: absolute;
   inset: .3rem;
-  border: 1px solid rgba(141, 116, 64, .5);
+  border: 1px solid var(--rule);
   pointer-events: none;
 }
 .env__card .eyebrow { color: var(--gold-dim); font-size: .58rem; letter-spacing: .3em; }
 .script--card {
   font-size: clamp(1.55rem, 6.8vw, 2rem);
-  color: #5d1f26;
+  color: var(--ink);
 }
 .env__rule {
   display: block;
   width: 2.5rem;
   height: 1px;
   margin: .55rem auto;
-  background: rgba(141, 116, 64, .6);
+  background: var(--gold);
 }
 .env__date {
   margin: 0;
   font-size: .62rem;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: rgba(58, 32, 24, .75);
+  color: var(--ink-soft);
 }
 
 .cover__guest {
   margin: clamp(1.1rem, 3.5vh, 2rem) auto clamp(1.1rem, 3vh, 1.75rem);
   padding: 1rem 1.25rem;
   max-width: 22rem;
-  border-top: 1px solid rgba(201, 169, 97, .32);
-  border-bottom: 1px solid rgba(201, 169, 97, .32);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
 }
 .cover__to {
   margin: 0;
   font-size: .78rem;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: rgba(245, 241, 230, .6);
+  color: var(--ink-faint);
 }
 .cover__name {
   margin: .25rem 0 0;
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 
 /* opened: the cover lifts away like a card being drawn out */
@@ -453,7 +463,7 @@ body.is-open .cover {
   justify-content: center;
   gap: .55em;
   padding: .8em 1.9em;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--ink);
   border-radius: 999px;
   font-family: var(--f-serif);
   font-size: .95rem;
@@ -468,9 +478,9 @@ body.is-open .cover {
 .btn--gold {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, var(--gold-soft), var(--gold));
-  color: var(--wine-900);
-  box-shadow: 0 .6rem 1.5rem rgba(201, 169, 97, .22);
+  background: linear-gradient(180deg, #63202a, var(--ink));
+  color: var(--cream);
+  box-shadow: 0 .5rem 1.1rem rgba(81, 20, 25, .26);
 }
 /* a highlight sweeps the gold every few seconds */
 .btn--gold::after {
@@ -480,18 +490,18 @@ body.is-open .cover {
   left: -60%;
   width: 45%;
   height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .6), transparent);
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .28), transparent);
   animation: swipe 5.5s ease-in-out infinite;
 }
 @keyframes swipe {
   0%, 62% { left: -60%; }
   92%, 100% { left: 118%; }
 }
-.btn--outline { background: transparent; color: var(--gold-soft); }
+.btn--outline { background: transparent; color: var(--ink); border-color: var(--rule); }
 .btn:hover { transform: translateY(-2px); }
-.btn--outline:hover { background: rgba(201, 169, 97, .12); }
+.btn--outline:hover { background: rgba(81, 20, 25, .07); }
 .btn:active { transform: translateY(0); }
-.btn:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .btn__icon { font-size: 1.1em; }
 
 /* ---------------------------------------------------------- invitation --- */
@@ -535,7 +545,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   gap: 1.9rem;
   min-height: 22px;
   padding: 0 var(--pad);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Cg fill='none' stroke='%23c9a961' stroke-width='1.1'%3E%3Cpath d='M11 3 L19 11 L11 19 L3 11 Z'/%3E%3C/g%3E%3Ccircle cx='11' cy='11' r='2' fill='%23c9a961'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Cg fill='none' stroke='%23b58b2f' stroke-width='1.1'%3E%3Cpath d='M11 3 L19 11 L11 19 L3 11 Z'/%3E%3C/g%3E%3Ccircle cx='11' cy='11' r='2' fill='%23b58b2f'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
 }
@@ -544,9 +554,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   content: "";
   flex: 0 1 5rem;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201, 169, 97, .55));
+  background: linear-gradient(90deg, transparent, var(--rule));
 }
-.ornament::after { background: linear-gradient(270deg, transparent, rgba(201, 169, 97, .55)); }
+.ornament::after { background: linear-gradient(270deg, transparent, var(--rule)); }
 
 /* --------------------------------------------------------- decorations --- */
 
@@ -578,8 +588,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .wishlist li {
   background: var(--paper);
   color: var(--ink-on-paper);
+  border: 1px solid rgba(81, 20, 25, .14);
   border-radius: .35rem;
-  box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, .45);
+  box-shadow: 0 .7rem 1.6rem rgba(81, 20, 25, .12);
   transition: transform .55s var(--ease), box-shadow .55s var(--ease);
 }
 .note:hover,
@@ -587,7 +598,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .venue:hover,
 .accounts li:hover {
   transform: translateY(-5px);
-  box-shadow: 0 1.9rem 3.2rem rgba(0, 0, 0, .55);
+  box-shadow: 0 1.15rem 2.4rem rgba(81, 20, 25, .18);
 }
 
 /* the double gold rule the printed stationery uses */
@@ -601,7 +612,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   content: "";
   position: absolute;
   inset: .6rem;
-  border: 1px solid rgba(141, 116, 64, .45);
+  border: 1px solid var(--rule);
   border-radius: .15rem;
   pointer-events: none;
 }
@@ -616,13 +627,13 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .note .arabic {
   margin: 0 0 1.5rem;
   font-size: clamp(1.15rem, 5vw, 1.4rem);
-  color: #2c1410;
+  color: var(--ink-deep);
 }
 .note__body {
   margin: 0;
   font-size: .96em;
   font-style: italic;
-  color: rgba(58, 32, 24, .88);
+  color: var(--ink-soft);
 }
 
 /* -------------------------------------------------------------- couple --- */
@@ -638,7 +649,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   max-width: 30ch;
   text-wrap: pretty;
   font-size: .92em;
-  color: rgba(245, 241, 230, .72);
+  color: var(--ink-soft);
 }
 
 .amp {
@@ -655,14 +666,14 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   gap: .15rem;
   margin: 1.5rem 0 2rem;
   font-family: var(--f-display);
-  color: var(--cream);
+  color: var(--ink);
 }
 .bigdate__dow { font-size: clamp(1.5rem, 6vw, 1.9rem); }
 .bigdate__day {
   font-size: clamp(4rem, 20vw, 6rem);
   font-weight: 500;
   line-height: .95;
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 .bigdate__my { font-size: clamp(1.35rem, 5.5vw, 1.75rem); letter-spacing: .06em; }
 
@@ -678,9 +689,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .count li {
   padding: .75rem .25rem;
   transition: border-color .4s var(--ease), background-color .4s var(--ease);
-  border: 1px solid rgba(201, 169, 97, .32);
+  border: 1px solid var(--rule);
   border-radius: .3rem;
-  background: rgba(43, 10, 17, .55);
+  background: rgba(255, 255, 255, .5);
 }
 .count b {
   display: block;
@@ -688,7 +699,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-family: var(--f-display);
   font-size: clamp(1.4rem, 6vw, 1.75rem);
   font-weight: 500;
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 .count li:last-child b { animation: tick 1s steps(1) infinite; }
 @keyframes tick {
@@ -700,7 +711,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-size: .68rem;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: rgba(245, 241, 230, .62);
+  color: var(--ink-faint);
 }
 
 /* -------------------------------------------------------------- events --- */
@@ -720,9 +731,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-family: var(--f-display);
   font-size: 1.35rem;
   font-weight: 600;
-  color: #4a1218;
+  color: var(--ink);
 }
-.event__time { margin: 0; color: rgba(58, 32, 24, .85); }
+.event__time { margin: 0; color: var(--ink-soft); }
 
 .venue__art {
   width: min(88%, 17rem);
@@ -734,14 +745,13 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-family: var(--f-display);
   font-size: 1.45rem;
   font-weight: 600;
-  color: #4a1218;
+  color: var(--ink);
 }
 .venue__addr {
   margin: 0 0 1.5rem;
   font-size: .95em;
-  color: rgba(58, 32, 24, .85);
+  color: var(--ink-soft);
 }
-.venue .btn--gold { color: var(--wine-900); }
 
 /* ---------------------------------------------------------------- gift --- */
 
@@ -764,24 +774,24 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-family: var(--f-display);
   font-size: 1.1rem;
   font-weight: 600;
-  color: #4a1218;
+  color: var(--ink);
 }
 .accounts .acc__no {
   font-size: 1.15rem;
   letter-spacing: .12em;
-  color: var(--ink-on-paper);
+  color: var(--ink);
   font-variant-numeric: lining-nums tabular-nums;
 }
-.accounts .acc__name { font-size: .9em; color: rgba(58, 32, 24, .72); }
+.accounts .acc__name { font-size: .9em; color: var(--ink-faint); }
 .accounts .btn {
   justify-self: center;
   margin-top: .5rem;
   padding: .5em 1.35em;
   font-size: .75rem;
-  border-color: var(--gold-dim);
-  color: #4a1218;
+  border-color: var(--rule);
+  color: var(--ink);
 }
-.accounts .btn:hover { background: rgba(201, 169, 97, .2); }
+.accounts .btn:hover { background: rgba(81, 20, 25, .07); }
 
 /* -------------------------------------------------------------- wishes --- */
 
@@ -797,21 +807,21 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .wishform textarea {
   width: 100%;
   padding: .8em 1em;
-  border: 1px solid rgba(201, 169, 97, .38);
+  border: 1px solid var(--rule);
   border-radius: .3rem;
-  background: rgba(20, 6, 10, .6);
-  color: var(--cream);
+  background: rgba(255, 255, 255, .62);
+  color: var(--ink);
   font: inherit;
   font-size: .95rem;
 }
 .wishform textarea { resize: vertical; min-height: 5.5rem; }
-.wishform ::placeholder { color: rgba(245, 241, 230, .45); }
-.wishform select { color: var(--cream); }
-.wishform select option { background: var(--wine-900); color: var(--cream); }
+.wishform ::placeholder { color: var(--ink-faint); }
+.wishform select { color: var(--ink); }
+.wishform select option { background: #fff; color: var(--ink); }
 .wishform :focus-visible {
   outline: none;
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201, 169, 97, .18);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(81, 20, 25, .14);
 }
 .wishform .btn { justify-self: center; margin-top: .25rem; }
 .wishform__note {
@@ -819,7 +829,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   min-height: 1.4em;
   font-size: .85rem;
   text-align: center;
-  color: var(--gold-soft);
+  color: var(--ink-soft);
 }
 .wishform .is-invalid { border-color: #d98a8a; }
 
@@ -844,7 +854,7 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .wishlist .w__name {
   font-family: var(--f-display);
   font-weight: 600;
-  color: #4a1218;
+  color: var(--ink);
 }
 .wishlist .w__tag {
   padding: .12em .7em;
@@ -853,16 +863,17 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   font-size: .7rem;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: #6b2b22;
+  color: var(--ink);
 }
-.wishlist .w__msg { margin: 0; font-size: .95em; color: rgba(58, 32, 24, .88); }
-.wishlist .w__when { font-size: .72rem; color: rgba(58, 32, 24, .5); }
+.wishlist .w__msg { margin: 0; font-size: .95em; color: var(--ink-soft); }
+.wishlist .w__when { font-size: .72rem; color: var(--ink-faint); }
 .wishlist .is-empty {
   background: none;
+  border: 0;
   box-shadow: none;
   padding: .5rem;
   text-align: center;
-  color: rgba(245, 241, 230, .55);
+  color: var(--ink-faint);
   font-style: italic;
 }
 
@@ -872,16 +883,16 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .closing__from {
   margin: 2rem 0 .25rem;
   font-style: italic;
-  color: rgba(245, 241, 230, .72);
+  color: var(--ink-soft);
 }
 
 .foot {
   padding: 1.5rem var(--pad) 2.5rem;
-  border-top: 1px solid rgba(201, 169, 97, .18);
+  border-top: 1px solid var(--rule);
   text-align: center;
   font-size: .78rem;
   letter-spacing: .12em;
-  color: rgba(245, 241, 230, .45);
+  color: var(--ink-faint);
 }
 .foot p { margin: 0; }
 
@@ -898,16 +909,16 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   height: 3rem;
   display: grid;
   place-items: center;
-  border: 1px solid var(--gold);
+  border: 1px solid var(--ink);
   border-radius: 50%;
-  background: rgba(43, 10, 17, .88);
-  color: var(--gold-soft);
+  background: var(--ink);
+  color: var(--cream);
   font-size: 1.15rem;
   cursor: pointer;
   backdrop-filter: blur(6px);
-  box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .45);
+  box-shadow: 0 .5rem 1.4rem rgba(81, 20, 25, .3);
 }
-.music:focus-visible { outline: 2px solid var(--gold-soft); outline-offset: 3px; }
+.music:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .music__disc { display: block; }
 .music[aria-pressed="true"] .music__disc { animation: spin 3.5s linear infinite; }
 
@@ -929,8 +940,8 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   .events { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
 
   .invite {
-    box-shadow: 0 0 6rem rgba(0, 0, 0, .55);
-    background: linear-gradient(180deg, rgba(43, 10, 17, .38), rgba(20, 6, 10, .38));
+    box-shadow: 0 0 5rem rgba(81, 20, 25, .14);
+    background: linear-gradient(180deg, rgba(255, 253, 248, .5), rgba(255, 251, 244, .32));
   }
 }
 

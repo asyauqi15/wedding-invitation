@@ -2,8 +2,6 @@
 # is the encrypted form and is the only version that belongs in the repo.
 content.json
 
-# Reference frames of the original template; not ours to republish.
-design/
 
 # local scratch
 __pycache__/
