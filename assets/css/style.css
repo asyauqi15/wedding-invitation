@@ -1,40 +1,83 @@
 /* ==========================================================================
-   Undangan pernikahan
-   Palette and type sampled from the Minimalism Dark Red artwork.
+   Undangan pernikahan — Lifa & Syauqi
+   "Old world botanical × elegant Indonesian wedding × Bima heritage"
+
+   The page is ivory first. Olive carries the botanical half of the identity,
+   burgundy is the romantic accent, and gold is hairlines only. Nothing here
+   is glossy: no metallic gradients, no sheen, no floating decoration.
    ========================================================================== */
 
-/* Palette taken from the Minimalism Dark Red artwork: the "dark red" is the
-   lettering, not the ground. The page is warm parchment; burgundy carries the
-   type and gold is reserved for small accents. */
+/* ---------------------------------------------------------------------------
+   ASSET SLOTS
+   Every decorative graphic is referenced through exactly one variable, so a
+   new file drops in with a single-line edit and nothing else moves.
+
+   The six under "still to come" have not been drawn yet. That is deliberate and
+   safe: a background image that 404s simply paints nothing, so every section is
+   complete and readable without its ornament.
+   --------------------------------------------------------------------------- */
 :root {
-  --parchment:    #ece4d8;
-  --parchment-lt: #f7f2e9;
-  --surface:      rgba(255, 255, 255, .58);
+  --asset-venue-engraving:  url("../img/venue-architectural-engraving.webp");
+  --asset-olive-branch:     url("../img/olive-botanical-branch.webp");
+  --asset-couple-botanical: url("../img/olive-burgundy-botanical.webp");
+  --asset-floral-spray:     url("../img/burgundy-floral-spray.webp");
+  --asset-divider:          url("../img/wedding-ornamental-divider.webp");
+  --asset-wax-seal:         url("../img/ls-wax-seal.webp");
+  --asset-corner-tl:        url("../img/botanical-corner-top-left.webp");
+  --asset-corner-tr:        url("../img/botanical-corner-top-right.webp");
+  --asset-corner-bl:        url("../img/botanical-corner-bottom-left.webp");
+  --asset-corner-br:        url("../img/botanical-corner-bottom-right.webp");
+  --asset-footer-ornament:  url("../img/botanical-footer-ornament.webp");
 
-  --ink:       #511419;                  /* burgundy — the dominant type colour */
-  --ink-deep:  #3f0d13;
-  --ink-soft:  rgba(81, 20, 25, .78);
-  --ink-faint: rgba(81, 20, 25, .52);
-  --rule:      rgba(81, 20, 25, .30);
+  /* the closing watermark is the venue engraving again, run very faint - there
+     is no separate small cut of it */
+  --asset-venue-mark:       var(--asset-venue-engraving);
 
-  --gold:      #b58b2f;
-  --gold-soft: #d3ab55;
-  --gold-dim:  #8d7440;
+  /* measured off the delivered artwork; a slot laid out as a shaped box needs
+     its proportion, or the art is letterboxed inside the wrong hole */
+  --venue-ratio:   1536 / 1024;
+  --spray-ratio:    643 / 535;
+  --branch-ratio:   596 / 568;
+  --couple-ratio:   548 / 599;
+  --divider-ratio:  910 / 184;
+  --seal-ratio:     337 / 348;
+  --footer-ratio:   929 / 164;
+  --corner-tl-ratio: 664 / 507;
+  --corner-tr-ratio: 660 / 451;
+  --corner-bl-ratio: 498 / 443;
+  --corner-br-ratio: 491 / 445;
+}
 
-  --cream:     #f2ece1;                  /* type that sits on burgundy */
-  --rose:      #b4707a;
+/* ---------------------------------------------------------------- palette --- */
 
-  --ink-on-paper: #511419;
-  --paper: url("../img/paper.webp") center / cover no-repeat;
+:root {
+  --color-burgundy:      #722F37;
+  --color-burgundy-dark: #5A252C;
+  --color-olive:         #4F5A3A;
+  --color-olive-soft:    #7A8060;
+  --color-ivory:         #F5F0E6;
+  --color-cream:         #EDE4D3;
+  --color-gold:          #B49A62;
+  --color-text:          #292820;
 
-  --shell: 30rem;          /* the invitation reads as a single tall card    */
-  --pad: clamp(1.25rem, 5vw, 2.25rem);
+  /* contextual tokens: a dark band redefines these once and everything inside
+     it follows, so no rule needs a colour of its own */
+  --tone:       var(--color-text);
+  --tone-soft:  rgba(41, 40, 32, .74);
+  --tone-faint: rgba(41, 40, 32, .52);
+  --accent:     var(--color-burgundy);
+  --hairline:   rgba(41, 40, 32, .16);
+  --gold-line:  rgba(180, 154, 98, .62);
+  --field-bg:   rgba(255, 255, 255, .6);
+
+  --shell: 30rem;                    /* the invitation reads as one tall card */
+  --pad: clamp(1.35rem, 5.5vw, 2.25rem);
+  --gap-sec: clamp(3.25rem, 11vh, 5rem);
   --ease: cubic-bezier(.22, .61, .36, 1);
 
-  --f-script: "Alex Brush", cursive;
-  --f-serif:  "Cormorant Garamond", "Times New Roman", serif;
-  --f-display: "Playfair Display", serif;
-  --f-arabic: "Amiri", serif;
+  --f-display: "Playfair Display", "Times New Roman", serif;
+  --f-serif:   "Cormorant Garamond", "Times New Roman", serif;
+  --f-arabic:  "Amiri", serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -50,106 +93,11 @@ body {
   margin: 0;
   min-height: 100svh;
   font-family: var(--f-serif);
-  font-size: clamp(1rem, .95rem + .3vw, 1.125rem);
-  line-height: 1.75;
-  color: var(--ink);
-  background: var(--parchment);
+  font-size: clamp(1rem, .95rem + .3vw, 1.1rem);
+  line-height: 1.72;
+  color: var(--tone);
+  background: var(--color-cream);
   overflow-x: clip;
-}
-
-/* --- backdrop ------------------------------------------------------------
-   Four quiet layers instead of one flat wash: a warm parchment base, drifting
-   tints, a damask lattice and a film grain that keeps the cream from looking
-   like blank paper. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -4;
-  background:
-    radial-gradient(130% 85% at 50% -10%, #fbf7ef 0%, #f3ece0 42%, #ece4d8 72%, #e2d7c7 100%);
-}
-
-.bg {
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* slow, wide colour drifts — the thing that keeps the page from feeling flat */
-.bg__glow {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: .55;
-  will-change: transform;
-}
-.bg__glow--a {
-  width: 62vmax; height: 62vmax;
-  top: -22vmax; left: -18vmax;
-  background: radial-gradient(circle, rgba(180, 112, 122, .22), transparent 68%);
-  animation: drift-a 26s ease-in-out infinite alternate;
-}
-.bg__glow--b {
-  width: 54vmax; height: 54vmax;
-  top: 32%; right: -22vmax;
-  background: radial-gradient(circle, rgba(181, 139, 47, .20), transparent 68%);
-  animation: drift-b 32s ease-in-out infinite alternate;
-}
-.bg__glow--c {
-  width: 70vmax; height: 70vmax;
-  bottom: -30vmax; left: 8%;
-  background: radial-gradient(circle, rgba(81, 20, 25, .14), transparent 70%);
-  animation: drift-c 38s ease-in-out infinite alternate;
-}
-@keyframes drift-a { to { transform: translate3d(14vmax, 10vmax, 0) scale(1.15); } }
-@keyframes drift-b { to { transform: translate3d(-12vmax, -14vmax, 0) scale(1.1); } }
-@keyframes drift-c { to { transform: translate3d(10vmax, -8vmax, 0) scale(1.12); } }
-
-/* damask lattice, barely there */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  opacity: .06;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cg fill='none' stroke='%23511419' stroke-width='.9'%3E%3Cpath d='M55 7 L103 55 L55 103 L7 55 Z'/%3E%3Cpath d='M55 30 L80 55 L55 80 L30 55 Z'/%3E%3C/g%3E%3Cg fill='%23511419'%3E%3Ccircle cx='55' cy='55' r='2.4'/%3E%3Ccircle cx='55' cy='7' r='1.7'/%3E%3Ccircle cx='103' cy='55' r='1.7'/%3E%3Ccircle cx='55' cy='103' r='1.7'/%3E%3Ccircle cx='7' cy='55' r='1.7'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 110px 110px;
-}
-
-/* grain + a warm edge, painted above the lattice but under the content */
-.bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(105% 72% at 50% 40%, transparent 46%, rgba(122, 74, 40, .16) 100%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.30'/%3E%3C/svg%3E");
-  background-size: cover, 180px 180px;
-  mix-blend-mode: multiply;
-}
-
-/* --- falling petals ------------------------------------------------------ */
-.petals { position: absolute; inset: 0; }
-.petal {
-  position: absolute;
-  top: -8vh;
-  border-radius: 62% 6% 62% 6%;
-  background: linear-gradient(135deg, rgba(180, 112, 122, .75), rgba(81, 20, 25, .5));
-  opacity: 0;
-  animation-name: fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  will-change: transform, opacity;
-}
-@keyframes fall {
-  0%   { opacity: 0;   transform: translate3d(0, 0, 0) rotate(0deg); }
-  10%  { opacity: .38; }
-  85%  { opacity: .22; }
-  100% { opacity: 0;   transform: translate3d(var(--dx, 6vw), 116vh, 0) rotate(var(--rot, 420deg)); }
 }
 
 body.is-locked { overflow: hidden; height: 100svh; }
@@ -162,60 +110,62 @@ img { max-width: 100%; display: block; }
   clip-path: inset(50%); overflow: hidden; white-space: nowrap;
 }
 
-/* ---------------------------------------------------------------- type --- */
+/* A whisper of tooth on the ivory so large flat areas do not band. No drifting
+   glows, no falling petals — the quiet is the point. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: .22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
 
-.script {
-  font-family: var(--f-script);
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--ink);
+/* ------------------------------------------------------------------ type --- */
+
+.display {
   margin: 0;
+  font-family: var(--f-display);
+  font-weight: 400;
+  line-height: 1.22;
+  color: var(--accent);
   overflow-wrap: break-word;
   text-wrap: balance;
 }
-/* Alex Brush runs wide — these stay a line or two on a 360px phone */
-.script--xl { font-size: clamp(2.1rem, 8.4vw, 3.5rem); }
-
-/* a light travelling across the gilt lettering — slow enough to read as sheen */
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  .script:not(.script--card) {
-    background-image: linear-gradient(100deg,
-      var(--ink) 20%, #8a3a30 40%, var(--ink) 58%, var(--ink) 80%);
-    background-size: 250% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    animation: sheen 11s ease-in-out infinite;
-  }
-}
-@keyframes sheen {
-  0%, 100% { background-position: 120% 0; }
-  50%      { background-position: -20% 0; }
-}
-.script--lg { font-size: clamp(1.6rem, 6.2vw, 2.4rem); }
+.display--xl { font-size: clamp(2rem, 8.5vw, 3rem); }
+.display--lg { font-size: clamp(1.45rem, 5.6vw, 1.9rem); }
+.display--md { font-size: clamp(1.3rem, 5vw, 1.6rem); }
+.display--light { color: var(--color-ivory); }
 
 .eyebrow {
-  margin: 0 0 .35em;
-  font-size: .72rem;
-  letter-spacing: .42em;
-  text-transform: uppercase;
-  color: var(--gold);
+  margin: 0 0 1rem;
   font-family: var(--f-serif);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: var(--color-olive-soft);
 }
+.eyebrow--light { color: rgba(245, 240, 230, .74); }
 
 .lede {
   margin: 0 0 1rem;
   font-size: 1.05em;
   font-style: italic;
-  color: var(--ink-soft);
+  color: var(--tone-soft);
 }
+.lede--light { color: rgba(245, 240, 230, .82); }
 
 .body {
   margin: 0 auto 1.5rem;
   max-width: 34ch;
-  color: var(--ink-soft);
+  color: var(--tone-soft);
+  text-wrap: pretty;
 }
+.body--light { color: rgba(245, 240, 230, .82); }
 
 .arabic, .bismillah {
   font-family: var(--f-arabic);
@@ -225,11 +175,22 @@ img { max-width: 100%; display: block; }
 }
 .bismillah {
   margin: 0 0 1.5rem;
-  font-size: clamp(1.4rem, 6vw, 1.9rem);
-  color: var(--ink);
+  font-size: clamp(1.35rem, 5.6vw, 1.8rem);
+  color: var(--accent);
 }
 
-/* --------------------------------------------------------------- cover --- */
+/* a hairline of gold — the only place the metal is allowed to appear */
+.rule {
+  display: block;
+  width: 4.5rem;
+  height: 1px;
+  margin: 1.5rem auto;
+  background: linear-gradient(90deg, transparent, var(--gold-line) 22%, var(--gold-line) 78%, transparent);
+}
+.rule--sm { width: 2.25rem; margin: .55rem auto; }
+.rule--light { background: linear-gradient(90deg, transparent, rgba(245, 240, 230, .5) 22%, rgba(245, 240, 230, .5) 78%, transparent); }
+
+/* ----------------------------------------------------------------- cover --- */
 
 /* display:grid would otherwise beat the UA [hidden] rule and keep the cover
    in the layout after it has faded */
@@ -243,12 +204,11 @@ img { max-width: 100%; display: block; }
   grid-template-rows: auto auto;
   align-content: center;
   justify-items: center;
-  gap: clamp(1.5rem, 5vh, 3rem);
+  gap: clamp(1.5rem, 5vh, 2.75rem);
   padding: clamp(1.25rem, 4vh, 2.25rem) var(--pad);
   text-align: center;
-  /* deliberately see-through: .invite is hidden until opened, so the cover does
-     not need to mask anything, and the drifting backdrop reads behind it */
-  background: radial-gradient(120% 65% at 50% 6%, rgba(255, 252, 246, .5), transparent 68%);
+  background:
+    radial-gradient(120% 70% at 50% 8%, #FBF8F1 0%, var(--color-ivory) 48%, var(--color-cream) 100%);
   transition: opacity .9s var(--ease), transform .9s var(--ease);
 }
 
@@ -261,11 +221,10 @@ img { max-width: 100%; display: block; }
    shows through the notch. */
 .env {
   position: relative;
-  width: min(84vw, 22rem);
+  width: min(84vw, 21rem);
   aspect-ratio: 1013 / 1168;
   margin-inline: auto;
-  filter: drop-shadow(0 1.1rem 2rem rgba(81, 20, 25, .28));
-  animation: float 6s ease-in-out infinite;
+  filter: drop-shadow(0 1rem 1.9rem rgba(41, 40, 32, .22));
 }
 
 .env__back,
@@ -281,13 +240,33 @@ img { max-width: 100%; display: block; }
 .env__spray {
   position: absolute;
   z-index: 2;                 /* tucked behind the card, peeking past its edge */
-  width: 40%;
-  top: -9%;
-  opacity: .95;
+  /* the bouquet is a wide composition, so it flanks the raised flap and spills
+     past the card's top corners rather than trailing down the sides */
+  top: 5%;
+  width: 46%;
+  aspect-ratio: var(--spray-ratio);
+  background: var(--asset-floral-spray) center / contain no-repeat;
   pointer-events: none;
 }
-.env__spray--l { left: -13%; transform: rotate(-12deg); }
-.env__spray--r { right: -13%; transform: scaleX(-1) rotate(-9deg); }
+.env__spray--l { left: -10%; transform: rotate(-8deg); }
+.env__spray--r { right: -10%; transform: scaleX(-1) rotate(-6deg); }
+
+/* The flap artwork already carries a gold seal, measured at 49.4% across and
+   72.5% down the envelope, 16.7% wide. The L&S seal is registered on that centre
+   and run a little larger, so it covers the printed one completely instead of
+   sitting beside it. */
+.env__seal {
+  position: absolute;
+  z-index: 5;
+  left: 49.4%;
+  bottom: 17.7%;
+  translate: -50% 0;
+  width: 21%;
+  aspect-ratio: var(--seal-ratio);
+  background: var(--asset-wax-seal) center / contain no-repeat;
+  filter: drop-shadow(0 .25rem .5rem rgba(41, 40, 32, .45));
+  pointer-events: none;
+}
 
 .env__card {
   position: absolute;
@@ -298,130 +277,114 @@ img { max-width: 100%; display: block; }
   width: 78%;
   /* the foot of the card is deliberately buried: the pocket covers everything
      below 64.6%, so the padding keeps the last line of type above that */
-  padding: 1.1rem .85rem 17%;
-  background: var(--paper);
-  border-radius: .18rem;
-  box-shadow: 0 .5rem 1.1rem rgba(81, 20, 25, .28);
+  padding: 1.15rem .85rem 17%;
+  background: var(--color-ivory);
+  border-radius: 1px;
+  box-shadow: 0 .45rem 1rem rgba(41, 40, 32, .22);
   text-align: center;
-  color: var(--ink);
   transition: translate .85s var(--ease), opacity .5s var(--ease) .35s;
 }
-/* opening pulls the card up and out, then the cover follows it */
+/* opening draws the card up and out, then the cover follows it */
 body.is-open .env__card { translate: -50% -62%; opacity: 0; }
-body.is-open .env { animation-play-state: paused; }
 
 .env__card::after {
   content: "";
   position: absolute;
   inset: .3rem;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--gold-line);
   pointer-events: none;
 }
-.env__card .eyebrow { color: var(--gold-dim); font-size: .58rem; letter-spacing: .3em; }
-.script--card {
-  font-size: clamp(1.55rem, 6.8vw, 2rem);
-  color: var(--ink);
+.env__card .eyebrow {
+  margin-bottom: .5rem;
+  font-size: .5rem;
+  letter-spacing: .28em;
+  color: var(--color-gold);
 }
-.env__rule {
-  display: block;
-  width: 2.5rem;
-  height: 1px;
-  margin: .55rem auto;
-  background: var(--gold);
+.display--card {
+  font-size: clamp(1.05rem, 4.4vw, 1.35rem);
+  color: var(--color-burgundy);
 }
 .env__date {
   margin: 0;
-  font-size: .62rem;
-  letter-spacing: .18em;
+  font-size: .56rem;
+  letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--tone-faint);
 }
 
 .cover__guest {
-  margin: clamp(1.1rem, 3.5vh, 2rem) auto clamp(1.1rem, 3vh, 1.75rem);
+  margin: clamp(1rem, 3.5vh, 1.75rem) auto clamp(1.25rem, 3.5vh, 1.9rem);
   padding: 1rem 1.25rem;
   max-width: 22rem;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
 }
 .cover__to {
   margin: 0;
-  font-size: .78rem;
-  letter-spacing: .2em;
+  font-size: .72rem;
+  letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--tone-faint);
 }
 .cover__name {
-  margin: .25rem 0 0;
+  margin: .3rem 0 0;
+  font-family: var(--f-display);
   font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--ink);
+  color: var(--accent);
 }
 
-/* opened: the cover lifts away like a card being drawn out */
+/* opened: the cover lifts away like a card being drawn out of its sleeve */
 body.is-open .cover {
   opacity: 0;
-  transform: translateY(-4%) scale(1.06);
+  transform: translateY(-3%) scale(1.04);
   pointer-events: none;
   transition-delay: .4s;
 }
 
-/* -------------------------------------------------------------- buttons --- */
+/* --------------------------------------------------------------- buttons --- */
 
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .55em;
-  padding: .8em 1.9em;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
+  gap: .6em;
+  min-height: 2.9rem;               /* comfortable touch target on a phone */
+  padding: .75em 1.9em;
+  border: 1px solid transparent;
+  border-radius: 2px;
   font-family: var(--f-serif);
-  font-size: .95rem;
+  font-size: .82rem;
   font-weight: 600;
-  letter-spacing: .14em;
+  letter-spacing: .18em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: background-color .35s var(--ease), color .35s var(--ease),
-              transform .2s var(--ease), box-shadow .35s var(--ease);
+              border-color .35s var(--ease);
 }
-.btn--gold {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(180deg, #63202a, var(--ink));
-  color: var(--cream);
-  box-shadow: 0 .5rem 1.1rem rgba(81, 20, 25, .26);
+.btn--solid {
+  background: var(--color-burgundy);
+  border-color: var(--color-burgundy);
+  color: var(--color-ivory);
 }
-/* a highlight sweeps the gold every few seconds */
-.btn--gold::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 45%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .28), transparent);
-  animation: swipe 5.5s ease-in-out infinite;
+.btn--solid:hover { background: var(--color-burgundy-dark); border-color: var(--color-burgundy-dark); }
+.btn--ghost {
+  background: transparent;
+  border-color: var(--gold-line);
+  color: var(--accent);
 }
-@keyframes swipe {
-  0%, 62% { left: -60%; }
-  92%, 100% { left: 118%; }
-}
-.btn--outline { background: transparent; color: var(--ink); border-color: var(--rule); }
-.btn:hover { transform: translateY(-2px); }
-.btn--outline:hover { background: rgba(81, 20, 25, .07); }
-.btn:active { transform: translateY(0); }
-.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.btn__icon { font-size: 1.1em; }
+.btn--ghost:hover { background: rgba(114, 47, 55, .06); border-color: var(--accent); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.btn__icon { font-size: 1.15em; letter-spacing: 0; }
 
-/* ---------------------------------------------------------- invitation --- */
+/* ------------------------------------------------------------ invitation --- */
 
 .invite {
   position: relative;
   z-index: 1;
   width: min(100%, var(--shell));
   margin-inline: auto;
+  background: var(--color-ivory);
   opacity: 0;
   visibility: hidden;
   transition: opacity 1s var(--ease) .25s;
@@ -430,243 +393,328 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 
 .sec {
   position: relative;
-  padding: clamp(3rem, 9vh, 4.75rem) var(--pad);
+  padding: var(--gap-sec) var(--pad);
   text-align: center;
   overflow: hidden;
 }
 
-/* [data-reveal] elements ease in as they enter the viewport. --d is set by
-   main.js so siblings in one section arrive in sequence rather than together. */
+/* the bands that give the page its rhythm: ivory · olive · ivory · cream ·
+   ivory · burgundy · cream · ivory · burgundy */
+.sec--cream { background: var(--color-cream); }
+
+.sec--olive,
+.sec--burgundy {
+  --tone: var(--color-ivory);
+  --tone-soft: rgba(245, 240, 230, .82);
+  --tone-faint: rgba(245, 240, 230, .6);
+  --accent: var(--color-ivory);
+  --hairline: rgba(245, 240, 230, .24);
+  --gold-line: rgba(180, 154, 98, .8);
+  --field-bg: rgba(255, 255, 255, .1);
+  color: var(--tone);
+}
+.sec--olive    { background: var(--color-olive); }
+.sec--burgundy { background: var(--color-burgundy); }
+
+/* [data-reveal] eases in as it enters the viewport. --d is set by main.js so
+   siblings in one section arrive in sequence rather than all together. */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(1.5rem);
-  transition: opacity .95s var(--ease), transform .95s var(--ease);
+  transform: translateY(1.1rem);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
   transition-delay: var(--d, 0ms);
 }
-[data-reveal="zoom"]  { transform: scale(.93); }
-[data-reveal="left"]  { transform: translate3d(-2rem, .5rem, 0); }
-[data-reveal="right"] { transform: translate3d(2rem, .5rem, 0); }
-[data-reveal].is-in   { opacity: 1; transform: none; }
+[data-reveal].is-in { opacity: 1; transform: none; }
 
-/* a gilt diamond on a hairline rule, set between sections */
-.ornament {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.9rem;
-  min-height: 22px;
-  padding: 0 var(--pad);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22'%3E%3Cg fill='none' stroke='%23b58b2f' stroke-width='1.1'%3E%3Cpath d='M11 3 L19 11 L11 19 L3 11 Z'/%3E%3C/g%3E%3Ccircle cx='11' cy='11' r='2' fill='%23b58b2f'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-}
-.ornament::before,
-.ornament::after {
-  content: "";
-  flex: 0 1 5rem;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--rule));
-}
-.ornament::after { background: linear-gradient(270deg, transparent, var(--rule)); }
+/* ----------------------------------------------------------- decorations --- */
 
-/* --------------------------------------------------------- decorations --- */
-
+/* Two shapes only. A sprig sits in the flow as a printed mark above the section
+   it opens; a corner is anchored outside the reading column so it never crosses
+   the text. Both are sized by width against the artwork's own proportion. */
 .deco {
-  position: absolute;
-  width: clamp(7rem, 34vw, 11rem);
-  opacity: .55;
+  display: block;
   pointer-events: none;
-  z-index: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
-.deco--tl { top: -2rem; left: -3.5rem; transform: rotate(8deg); animation: sway 14s ease-in-out infinite; }
-.deco--tr { top: -2.5rem; right: -3.5rem; transform: scaleX(-1) rotate(6deg); animation: sway 17s ease-in-out infinite reverse; }
-.deco--bl { bottom: -3.5rem; left: -5rem; opacity: .38; transform: rotate(-172deg); animation: sway 20s ease-in-out infinite; }
 
-@keyframes sway {
-  0%, 100% { rotate: 0deg; }
-  50%      { rotate: 2.2deg; }
+.deco--branch {
+  width: clamp(6.5rem, 32vw, 9rem);
+  aspect-ratio: var(--branch-ratio);
+  margin: 0 auto 1.5rem;
+  background-image: var(--asset-olive-branch);
 }
+.deco--couple {
+  width: clamp(7.5rem, 36vw, 10.5rem);
+  aspect-ratio: var(--couple-ratio);
+  margin: 0 auto 1.5rem;
+  background-image: var(--asset-couple-botanical);
+}
+/* a wide ornament like the divider, not a small mark - it is sized as a plate */
+.deco--footer {
+  width: min(76%, 15rem);
+  aspect-ratio: var(--footer-ratio);
+  margin: 0 auto 1.15rem;
+  opacity: .8;
+  background-image: var(--asset-footer-ornament);
+}
+
+.deco--corner-tl,
+.deco--corner-tr,
+.deco--corner-bl,
+.deco--corner-br {
+  position: absolute;
+  width: clamp(6.5rem, 32vw, 9.5rem);
+  opacity: .45;
+}
+/* the four pieces are drawn for their own quadrant and none of them share a
+   proportion, so each carries its own ratio */
+.deco--corner-tl {
+  top: 0; left: 0;
+  aspect-ratio: var(--corner-tl-ratio);
+  background-image: var(--asset-corner-tl);
+  background-position: top left;
+}
+.deco--corner-tr {
+  top: 0; right: 0;
+  aspect-ratio: var(--corner-tr-ratio);
+  background-image: var(--asset-corner-tr);
+  background-position: top right;
+}
+.deco--corner-bl {
+  bottom: 0; left: 0;
+  aspect-ratio: var(--corner-bl-ratio);
+  background-image: var(--asset-corner-bl);
+  background-position: bottom left;
+}
+.deco--corner-br {
+  bottom: 0; right: 0;
+  aspect-ratio: var(--corner-br-ratio);
+  background-image: var(--asset-corner-br);
+  background-position: bottom right;
+}
+
+/* the architectural mark, ghosted behind the closing lines at low intensity */
+.deco--closing {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  width: min(84%, 20rem);
+  aspect-ratio: var(--venue-ratio);
+  opacity: .1;
+  background-image: var(--asset-venue-mark);
+}
+
+/* The collection is full-colour engraving, not flat line work: its burgundy and
+   cream flowers already carry against a dark band, so all a band needs is to
+   hold the art back off the type. Inverting it, as flat line work would want,
+   would flatten the whole piece to a white silhouette. */
+.sec--olive .deco,
+.sec--burgundy .deco { opacity: .6; }
+
+/* the closing mark is a watermark, not an ornament, and it is the full venue
+   engraving: it has to stay far back, and the band rule above would otherwise
+   outrank .deco--closing and pull it forward */
+.sec--burgundy .deco--closing { opacity: .13; }
+
+/* Every other corner sits in a section's padding, clear of the type. The wish
+   list is the exception: it runs right down to the foot of its section, so that
+   corner is given its own room instead of sitting behind the last entry. */
+.sec--wishes { padding-bottom: calc(var(--gap-sec) + 5rem); }
 
 .sec > *:not(.deco) { position: relative; z-index: 1; }
 
-/* ---------------------------------------------------------- paper cards --- */
-
-.card,
-.note,
-.event,
-.venue,
-.accounts li,
-.wishlist li {
-  background: var(--paper);
-  color: var(--ink-on-paper);
-  border: 1px solid rgba(81, 20, 25, .14);
-  border-radius: .35rem;
-  box-shadow: 0 .7rem 1.6rem rgba(81, 20, 25, .12);
-  transition: transform .55s var(--ease), box-shadow .55s var(--ease);
+/* the gilt filigree set between the movements of the page. The artwork draws
+   its own rule out to both ends, so nothing is added either side of it. */
+.ornament {
+  display: grid;
+  place-items: center;
+  padding: clamp(.5rem, 2.5vw, 1rem) var(--pad);
+  background-color: var(--color-ivory);
 }
-.note:hover,
-.event:hover,
-.venue:hover,
-.accounts li:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 1.15rem 2.4rem rgba(81, 20, 25, .18);
-}
-
-/* the double gold rule the printed stationery uses */
-.note,
-.venue {
-  position: relative;
-  padding: clamp(2rem, 8vw, 2.75rem) clamp(1.25rem, 6vw, 2rem);
-}
-.note::after,
-.venue::after {
+.ornament::before {
   content: "";
-  position: absolute;
-  inset: .6rem;
-  border: 1px solid var(--rule);
-  border-radius: .15rem;
-  pointer-events: none;
+  width: min(72%, 15rem);
+  aspect-ratio: var(--divider-ratio);
+  background: var(--asset-divider) center / contain no-repeat;
 }
 
-.note__ref {
-  margin: 0 0 1.25rem;
-  font-size: .78rem;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: var(--gold-dim);
-}
-.note .arabic {
-  margin: 0 0 1.5rem;
-  font-size: clamp(1.15rem, 5vw, 1.4rem);
-  color: var(--ink-deep);
-}
-.note__body {
+/* ------------------------------------------------------------------ hero --- */
+
+.sec--hero { padding-block: clamp(4rem, 15vh, 6.5rem); }
+
+.names {
+  display: grid;
+  justify-items: center;
+  gap: .1em;
   margin: 0;
-  font-size: .96em;
+  font-family: var(--f-display);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 12vw, 4rem);
+  line-height: 1.05;
+  color: var(--color-burgundy);
+}
+.names__part { display: block; }
+.names__amp {
+  font-family: var(--f-serif);
   font-style: italic;
-  color: var(--ink-soft);
+  font-size: .46em;
+  line-height: 1;
+  color: var(--color-gold);
+}
+.hero__date {
+  margin: 0;
+  font-size: .82rem;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--color-olive-soft);
 }
 
-/* -------------------------------------------------------------- couple --- */
+/* ----------------------------------------------------------------- verse --- */
+
+.sec--olive .arabic {
+  margin: 0 0 1.5rem;
+  /* sized to sit inside the padding at 390px — tashkeel makes these lines
+     much wider than their character count suggests */
+  font-size: clamp(1.02rem, 4.5vw, 1.35rem);
+  color: var(--color-ivory);
+}
+.verse {
+  margin: 0 auto;
+  max-width: 38ch;
+  font-size: .98em;
+  font-style: italic;
+  color: rgba(245, 240, 230, .84);
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------- couple --- */
 
 .couple {
   display: grid;
-  gap: clamp(1.5rem, 6vw, 2.25rem);
+  gap: clamp(1.25rem, 5vw, 1.75rem);
   margin-top: 2.5rem;
 }
-
 .person__meta {
   margin: .5rem auto 0;
   max-width: 30ch;
-  text-wrap: pretty;
   font-size: .92em;
-  color: var(--ink-soft);
+  color: var(--tone-soft);
+  text-wrap: pretty;
 }
-
-.amp {
-  font-family: var(--f-script);
-  font-size: clamp(2.5rem, 10vw, 3.25rem);
-  color: var(--gold);
+.couple__amp {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: clamp(1.6rem, 7vw, 2.1rem);
   line-height: 1;
+  color: var(--color-gold);
 }
 
-/* ------------------------------------------------------- save the date --- */
+/* --------------------------------------------------------- save the date --- */
 
 .bigdate {
   display: grid;
-  gap: .15rem;
-  margin: 1.5rem 0 2rem;
+  gap: .1rem;
+  margin: 0 0 2rem;
   font-family: var(--f-display);
-  color: var(--ink);
+  color: var(--color-burgundy);
 }
-.bigdate__dow { font-size: clamp(1.5rem, 6vw, 1.9rem); }
+.bigdate__dow { font-size: clamp(1.25rem, 5vw, 1.6rem); letter-spacing: .04em; }
 .bigdate__day {
-  font-size: clamp(4rem, 20vw, 6rem);
+  font-size: clamp(3.75rem, 19vw, 5.5rem);
   font-weight: 500;
   line-height: .95;
-  color: var(--ink);
 }
-.bigdate__my { font-size: clamp(1.35rem, 5.5vw, 1.75rem); letter-spacing: .06em; }
+.bigdate__my { font-size: clamp(1.2rem, 5vw, 1.55rem); letter-spacing: .06em; }
 
+/* editorial rather than digital clock: hairlines instead of boxes */
 .count {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: .5rem;
-  max-width: 22rem;
-  margin: 0 auto 2rem;
-  padding: 0;
+  max-width: 21rem;
+  margin: 0 auto 2.25rem;
+  padding: 1.1rem 0;
   list-style: none;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
 }
-.count li {
-  padding: .75rem .25rem;
-  transition: border-color .4s var(--ease), background-color .4s var(--ease);
-  border: 1px solid var(--rule);
-  border-radius: .3rem;
-  background: rgba(255, 255, 255, .5);
-}
+.count li + li { border-left: 1px solid var(--hairline); }
 .count b {
   display: block;
-  font-variant-numeric: lining-nums tabular-nums;
   font-family: var(--f-display);
-  font-size: clamp(1.4rem, 6vw, 1.75rem);
+  font-size: clamp(1.35rem, 6vw, 1.7rem);
   font-weight: 500;
-  color: var(--ink);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--color-burgundy);
 }
-.count li:last-child b { animation: tick 1s steps(1) infinite; }
-@keyframes tick {
-  0%, 60% { opacity: 1; }
-  61%, 100% { opacity: .55; }
-}
-
 .count span {
-  font-size: .68rem;
-  letter-spacing: .16em;
+  font-size: .62rem;
+  letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--color-olive-soft);
 }
 
-/* -------------------------------------------------------------- events --- */
+/* ----------------------------------------------------------------- venue --- */
 
-.events {
-  display: grid;
-  gap: 1.25rem;
-  margin-bottom: 2rem;
-}
-.event { padding: 1.75rem 1.25rem; }
-.event__icon {
-  width: clamp(4.5rem, 20vw, 6rem);
-  margin: 0 auto .75rem;
-}
-.event h3 {
-  margin: 0 0 .25rem;
-  font-family: var(--f-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--ink);
-}
-.event__time { margin: 0; color: var(--ink-soft); }
-
-.venue__art {
-  width: min(88%, 17rem);
-  margin: 0 auto 1rem;
+/* No frame and no card: the engraving is printed straight onto the stationery,
+   which is why it is multiplied into the ivory rather than laid on top of it. */
+.venue__plate {
+  width: min(100%, 21rem);
+  margin: .5rem auto 1.75rem;
+  aspect-ratio: var(--venue-ratio);
+  background: var(--asset-venue-engraving) center / contain no-repeat;
+  filter: grayscale(.5) sepia(.34) contrast(1.04);
+  opacity: .94;
   mix-blend-mode: multiply;
 }
-.venue__name {
-  margin: 0 0 .35rem;
-  font-family: var(--f-display);
-  font-size: 1.45rem;
-  font-weight: 600;
-  color: var(--ink);
-}
 .venue__addr {
-  margin: 0 0 1.5rem;
+  margin: .6rem 0 0;
   font-size: .95em;
-  color: var(--ink-soft);
+  color: var(--tone-soft);
 }
 
-/* ---------------------------------------------------------------- gift --- */
+/* --------------------------------------------------------- event details --- */
 
-.gift__art { width: min(50%, 10rem); margin: 0 auto 1.25rem; }
+.detail {
+  padding: clamp(1.5rem, 6vw, 2rem) clamp(1.15rem, 5vw, 1.75rem);
+  background: var(--color-ivory);
+  border-radius: 2px;
+  box-shadow: 0 .7rem 1.8rem rgba(41, 40, 32, .16);
+  /* a light island on the burgundy band, so it takes the page tokens back
+     rather than inheriting the band's */
+  --tone: var(--color-text);
+  --tone-soft: rgba(41, 40, 32, .74);
+  --accent: var(--color-burgundy);
+  --hairline: rgba(41, 40, 32, .14);
+  color: var(--tone);
+}
+.detail__list { margin: 0 0 1.5rem; }
+.detail__row {
+  padding: .8rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.detail__row:first-child { padding-top: 0; }
+.detail__row:last-child { border-bottom: 0; padding-bottom: 0; }
+.detail dt {
+  margin-bottom: .15rem;
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--color-olive-soft);
+}
+.detail dd {
+  margin: 0;
+  font-family: var(--f-display);
+  font-size: 1.02rem;
+  line-height: 1.45;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+/* ------------------------------------------------------------------ gift --- */
 
 .accounts {
   display: grid;
@@ -677,137 +725,148 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 }
 .accounts li {
   display: grid;
-  gap: .3rem;
-  padding: 1.25rem;
-  text-align: center;
+  gap: .25rem;
+  padding: 1.35rem 1.15rem;
+  background: rgba(255, 255, 255, .55);
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
 }
-.accounts .acc__bank {
+.acc__bank {
   font-family: var(--f-display);
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--ink);
+  font-size: 1.05rem;
+  color: var(--color-burgundy);
 }
-.accounts .acc__no {
-  font-size: 1.15rem;
-  letter-spacing: .12em;
-  color: var(--ink);
+.acc__no {
+  font-family: var(--f-display);
+  font-size: 1.3rem;
+  letter-spacing: .1em;
   font-variant-numeric: lining-nums tabular-nums;
+  color: var(--color-text);
 }
-.accounts .acc__name { font-size: .9em; color: var(--ink-faint); }
+.acc__name {
+  font-size: .88em;
+  color: var(--tone-faint);
+}
 .accounts .btn {
   justify-self: center;
-  margin-top: .5rem;
-  padding: .5em 1.35em;
-  font-size: .75rem;
-  border-color: var(--rule);
-  color: var(--ink);
+  margin-top: .75rem;
+  padding: .6em 1.6em;
+  min-height: 2.75rem;             /* still a 44px target at the smaller size */
+  font-size: .72rem;
 }
-.accounts .btn:hover { background: rgba(81, 20, 25, .07); }
 
-/* -------------------------------------------------------------- wishes --- */
+/* ---------------------------------------------------------- ucapan / rsvp --- */
 
 .wishform {
   display: grid;
-  gap: .75rem;
+  gap: 1.1rem;
   max-width: 24rem;
-  margin: 1.5rem auto 2rem;
+  margin: 1.75rem auto 2.25rem;
   text-align: left;
+}
+.field { display: grid; gap: .4rem; margin: 0; }
+.field label {
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--color-olive-soft);
 }
 .wishform input,
 .wishform select,
 .wishform textarea {
   width: 100%;
-  padding: .8em 1em;
-  border: 1px solid var(--rule);
-  border-radius: .3rem;
-  background: rgba(255, 255, 255, .62);
-  color: var(--ink);
+  min-height: 2.9rem;
+  padding: .7em .9em;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  background: var(--field-bg);
+  color: var(--tone);
   font: inherit;
-  font-size: .95rem;
+  font-size: 1rem;                  /* 16px, or iOS zooms the page on focus */
 }
-.wishform textarea { resize: vertical; min-height: 5.5rem; }
-.wishform ::placeholder { color: var(--ink-faint); }
-.wishform select { color: var(--ink); }
-.wishform select option { background: #fff; color: var(--ink); }
+.wishform textarea { resize: vertical; min-height: 6rem; line-height: 1.6; }
+.wishform ::placeholder { color: var(--tone-faint); }
+.wishform select option { background: #fff; color: var(--color-text); }
 .wishform :focus-visible {
   outline: none;
-  border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgba(81, 20, 25, .14);
+  border-color: var(--color-burgundy);
+  box-shadow: 0 0 0 3px rgba(114, 47, 55, .13);
 }
 .wishform .btn { justify-self: center; margin-top: .25rem; }
 .wishform__note {
-  margin: 0;
   min-height: 1.4em;
   font-size: .85rem;
   text-align: center;
-  color: var(--ink-soft);
+  color: var(--tone-soft);
 }
-.wishform .is-invalid { border-color: #d98a8a; }
+.wishform .is-invalid { border-color: var(--color-burgundy); }
 
+/* entries are separated by rules rather than stacked as cards — fewer boxes */
 .wishlist {
   display: grid;
-  gap: .85rem;
-  max-height: 26rem;
+  max-height: 24rem;
   overflow-y: auto;
   margin: 0;
-  padding: 0 .25rem;
+  padding: 0;
   list-style: none;
   text-align: left;
 }
-.wishlist li { padding: 1rem 1.15rem; }
-.wishlist .w__head {
+.wishlist li {
+  padding: 1.1rem .15rem;
+  border-top: 1px solid var(--hairline);
+}
+.w__head {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: .5rem;
+  gap: .55rem;
   margin-bottom: .3rem;
 }
-.wishlist .w__name {
+.w__name {
   font-family: var(--f-display);
-  font-weight: 600;
-  color: var(--ink);
+  font-size: 1.05rem;
+  color: var(--color-burgundy);
 }
-.wishlist .w__tag {
-  padding: .12em .7em;
+.w__tag {
+  padding: .1em .7em;
+  border: 1px solid rgba(79, 90, 58, .35);
   border-radius: 999px;
-  background: rgba(93, 31, 40, .12);
-  font-size: .7rem;
-  letter-spacing: .08em;
+  font-size: .66rem;
+  letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--color-olive);
 }
-.wishlist .w__msg { margin: 0; font-size: .95em; color: var(--ink-soft); }
-.wishlist .w__when { font-size: .72rem; color: var(--ink-faint); }
+.w__msg { margin: 0; font-size: .96em; color: var(--tone-soft); }
+.w__when { font-size: .72rem; color: var(--tone-faint); }
 .wishlist .is-empty {
-  background: none;
   border: 0;
-  box-shadow: none;
-  padding: .5rem;
+  padding: .75rem .15rem;
   text-align: center;
-  color: var(--ink-faint);
   font-style: italic;
+  color: var(--tone-faint);
 }
 
-/* ------------------------------------------------------------- closing --- */
+/* --------------------------------------------------------------- closing --- */
 
-.sec--closing { padding-bottom: clamp(4rem, 14vh, 7rem); }
+.sec--closing { padding-block: clamp(4rem, 14vh, 6.5rem); }
 .closing__from {
-  margin: 2rem 0 .25rem;
+  margin: 1.75rem 0 .5rem;
   font-style: italic;
-  color: var(--ink-soft);
+  color: rgba(245, 240, 230, .78);
 }
 
 .foot {
-  padding: 1.5rem var(--pad) 2.5rem;
-  border-top: 1px solid var(--rule);
+  padding: 1.75rem var(--pad) 2.5rem;
+  background: var(--color-ivory);
   text-align: center;
-  font-size: .78rem;
-  letter-spacing: .12em;
-  color: var(--ink-faint);
+  font-size: .74rem;
+  letter-spacing: .14em;
+  color: var(--tone-faint);
 }
 .foot p { margin: 0; }
 
-/* --------------------------------------------------------------- music --- */
+/* ----------------------------------------------------------------- music --- */
 
 .music[hidden] { display: none; }
 
@@ -816,44 +875,48 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   right: clamp(.9rem, 4vw, 1.5rem);
   bottom: clamp(.9rem, 4vw, 1.5rem);
   z-index: 50;
-  width: 3rem;
-  height: 3rem;
+  width: 2.9rem;
+  height: 2.9rem;
   display: grid;
   place-items: center;
-  border: 1px solid var(--ink);
+  border: 1px solid var(--color-burgundy);
   border-radius: 50%;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 1.15rem;
+  background: var(--color-burgundy);
+  color: var(--color-ivory);
+  font-size: 1.1rem;
   cursor: pointer;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 .5rem 1.4rem rgba(81, 20, 25, .3);
+  box-shadow: 0 .4rem 1.1rem rgba(41, 40, 32, .26);
 }
-.music:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.music:focus-visible { outline: 2px solid var(--color-burgundy); outline-offset: 3px; }
 .music__disc { display: block; }
-.music[aria-pressed="true"] .music__disc { animation: spin 3.5s linear infinite; }
-
+.music[aria-pressed="true"] .music__disc { animation: spin 4s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ------------------------------------------------------------ wide-up --- */
+/* --------------------------------------------------------------- wide-up --- */
 
 @media (min-width: 48rem) {
   :root { --shell: 34rem; }
 
+  .invite { box-shadow: 0 0 4rem rgba(41, 40, 32, .13); }
+
   .couple {
     grid-template-columns: 1fr auto 1fr;
     align-items: start;
+    gap: clamp(1rem, 3vw, 1.75rem);
   }
-  .amp { align-self: center; }
-  /* the columns are narrow here, so the script has to come down a step */
-  .couple .script--lg { font-size: clamp(1.3rem, 3.2vw, 1.65rem); }
+  .couple__amp { align-self: center; }
+  /* the columns are narrow here, so the names come down a step */
+  .couple .display--md { font-size: clamp(1.15rem, 3vw, 1.4rem); }
 
-  .events { grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-
-  .invite {
-    box-shadow: 0 0 5rem rgba(81, 20, 25, .14);
-    background: linear-gradient(180deg, rgba(255, 253, 248, .5), rgba(255, 251, 244, .32));
+  /* enough width for the label and the value to sit on one line */
+  .detail__row {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    text-align: left;
   }
+  .detail dt { margin-bottom: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -864,6 +927,4 @@ body.is-open .invite { opacity: 1; visibility: visible; }
     transition-delay: 0s !important;
   }
   [data-reveal] { opacity: 1; transform: none; }
-  .bg__glow, .petals { display: none; }
-  .btn--gold::after { display: none; }
 }

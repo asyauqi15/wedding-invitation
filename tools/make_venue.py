@@ -16,7 +16,7 @@ from PIL import Image
 from scipy import ndimage
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, 'assets', 'img', 'venue.webp')
+OUT = os.path.join(ROOT, 'assets', 'img', 'venue-architectural-engraving.webp')
 
 # the building and plaza sit well above the vignette; 115 splits them cleanly
 CUT = 115

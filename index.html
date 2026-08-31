@@ -5,45 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lifa &amp; Syauqi — Undangan Pernikahan</title>
 <meta name="description" content="Undangan pernikahan Nur Kholifah &amp; Ahmad Syauqi — Sabtu, 12 Desember 2026, Gedung Seni dan Budaya Kota Bima.">
-<meta name="theme-color" content="#ece4d8">
+<meta name="theme-color" content="#f5f0e6">
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:title" content="Lifa &amp; Syauqi — Undangan Pernikahan">
 <meta property="og:description" content="Sabtu, 12 Desember 2026 · Gedung Seni dan Budaya Kota Bima">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- three families only: Playfair for display, Cormorant for text, Amiri for Arabic -->
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="is-locked">
 
-<!-- backdrop: soft drifting glows, a damask lattice and film grain sit behind
-     everything; petals are added by main.js so reduced-motion can opt out -->
-<div class="bg" aria-hidden="true">
-  <span class="bg__glow bg__glow--a"></span>
-  <span class="bg__glow bg__glow--b"></span>
-  <span class="bg__glow bg__glow--c"></span>
-  <div class="petals" id="petals"></div>
-</div>
-
-<!-- ============================== cover ============================== -->
+<!-- ============================== cover ==============================
+     The printed piece assembles in four layers: open envelope at the back,
+     florals tucked behind the card, the card itself, then the front pocket
+     with the wax seal sitting on the fold. -->
 <section class="cover" id="cover">
   <div class="cover__art">
-    <!-- layered exactly as the printed piece stacks: open envelope at the back,
-         florals tucked behind the card, the card itself, then the front pocket -->
     <div class="env">
       <img class="env__back" src="assets/img/envelope-open.webp" alt="" width="1013" height="1168">
-      <img class="env__spray env__spray--l" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
-      <img class="env__spray env__spray--r" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
+      <span class="env__spray env__spray--l" aria-hidden="true"></span>
+      <span class="env__spray env__spray--r" aria-hidden="true"></span>
 
       <div class="env__card">
-        <p class="eyebrow">The Wedding of</p>
-        <h1 class="script script--card" data-field="coupleShort">Lifa &amp; Syauqi</h1>
-        <span class="env__rule" aria-hidden="true"></span>
+        <p class="eyebrow">The Wedding Of</p>
+        <h1 class="display display--card" data-field="coupleShort">Lifa &amp; Syauqi</h1>
+        <span class="rule rule--sm" aria-hidden="true"></span>
         <p class="env__date" data-field="dateLong">Sabtu, 12 Desember 2026</p>
       </div>
 
       <img class="env__front" src="assets/img/envelope-flap.webp" alt="" width="1013" height="668">
+      <span class="env__seal" aria-hidden="true"></span>
     </div>
   </div>
 
@@ -53,7 +47,7 @@
       <p class="cover__name" id="guestName">Tamu Undangan</p>
     </div>
 
-    <button class="btn btn--gold" id="openBtn" type="button">
+    <button class="btn btn--solid" id="openBtn" type="button">
       <span class="btn__icon" aria-hidden="true">&#9993;</span> Buka Undangan
     </button>
   </div>
@@ -62,32 +56,47 @@
 <!-- ============================ invitation =========================== -->
 <main class="invite" id="invite" aria-hidden="true">
 
-  <section class="sec sec--quote" id="quote">
-    <img class="deco deco--tl" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
-    <div class="note" data-reveal="zoom">
-      <p class="note__ref">QS. Ar-Rum Ayat 21</p>
+  <!-- 1 · hero — the names carry the page, so nothing else competes here -->
+  <section class="sec sec--hero" id="hero">
+    <span class="deco deco--branch" aria-hidden="true"></span>
+    <p class="eyebrow" data-reveal>The Wedding Of</p>
+    <h2 class="names" data-reveal>
+      <span class="names__part" data-field="brideShort">Lifa</span>
+      <span class="names__amp" aria-hidden="true">&amp;</span>
+      <span class="names__part" data-field="groomShort">Syauqi</span>
+    </h2>
+    <span class="rule" aria-hidden="true"></span>
+    <p class="hero__date" data-field="dateLong" data-reveal>Sabtu, 12 Desember 2026</p>
+  </section>
+
+  <!-- 2 · verse — the one dark olive band; kept deliberately bare -->
+  <section class="sec sec--olive" id="quote">
+    <span class="deco deco--corner-tl" aria-hidden="true"></span>
+    <span class="deco deco--corner-br" aria-hidden="true"></span>
+    <div data-reveal>
+      <p class="eyebrow eyebrow--light">QS. Ar-Rum Ayat 21</p>
       <p class="arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ</p>
-      <p class="note__body">&ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;</p>
+      <p class="verse">&ldquo;Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir.&rdquo;</p>
     </div>
   </section>
 
-  <div class="ornament" aria-hidden="true"></div>
-
+  <!-- 3 · the couple — editorial and symmetrical, no photographs -->
   <section class="sec" id="couple">
+    <span class="deco deco--couple" aria-hidden="true"></span>
     <p class="bismillah" data-reveal>بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
     <p class="lede" data-reveal>Assalamu&rsquo;alaikum Warahmatullahi Wabarakatuh</p>
     <p class="body" data-reveal>Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk hadir di hari bahagia kami.</p>
 
     <div class="couple">
-      <article class="person" data-reveal="left">
-        <h2 class="script script--lg" data-field="brideName">Nur Kholifah</h2>
+      <article class="person" data-reveal>
+        <h3 class="display display--md" data-field="brideName">Nur Kholifah</h3>
         <p class="person__meta" data-field="brideParents">Putri dari Bapak Muhamad Yusuf &amp; Ibu Siti Nurmi</p>
       </article>
 
-      <div class="amp" data-reveal="zoom" aria-hidden="true">&amp;</div>
+      <div class="couple__amp" data-reveal aria-hidden="true">&amp;</div>
 
-      <article class="person" data-reveal="right">
-        <h2 class="script script--lg" data-field="groomName">Ahmad Syauqi</h2>
+      <article class="person" data-reveal>
+        <h3 class="display display--md" data-field="groomName">Ahmad Syauqi</h3>
         <p class="person__meta" data-field="groomParents">Putra dari Bapak Rendra Farid &amp; Ibu Lindawaty</p>
       </article>
     </div>
@@ -95,9 +104,9 @@
 
   <div class="ornament" aria-hidden="true"></div>
 
-  <section class="sec sec--date" id="date">
-    <img class="deco deco--tr" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
-    <p class="script script--lg" data-reveal>Save the Date</p>
+  <!-- 4 · the date and the countdown -->
+  <section class="sec sec--cream" id="date">
+    <p class="eyebrow" data-reveal>Save The Date</p>
     <p class="bigdate" data-reveal>
       <span class="bigdate__dow" data-field="dow">Sabtu</span>
       <span class="bigdate__day" data-field="day">12</span>
@@ -109,69 +118,103 @@
       <li><b data-cd="m">0</b><span>Menit</span></li>
       <li><b data-cd="s">0</b><span>Detik</span></li>
     </ul>
-    <button class="btn btn--outline" id="calBtn" type="button">Simpan ke Kalender</button>
+    <button class="btn btn--ghost" id="calBtn" type="button">Simpan ke Kalender</button>
   </section>
 
-  <section class="sec" id="event">
-    <div class="events">
-      <article class="event" data-reveal>
-        <img class="event__icon" src="assets/img/icon-cake.webp" alt="" aria-hidden="true">
-        <h3>Resepsi Pernikahan</h3>
-        <p class="event__time" data-field="resepsiTime">Pukul 14.00 WITA &ndash; selesai</p>
-      </article>
-    </div>
+  <!-- 5 · venue — the architectural engraving is the signature illustration,
+       so it gets whitespace and no frame -->
+  <section class="sec sec--venue" id="venue">
+    <p class="eyebrow" data-reveal>The Venue</p>
+    <div class="venue__plate" role="img" aria-label="Ilustrasi Gedung Seni dan Budaya Kota Bima" data-reveal></div>
+    <h2 class="display display--lg" data-field="venueName" data-reveal>Gedung Seni dan Budaya Kota Bima</h2>
+    <p class="venue__addr" data-field="venueAddress" data-reveal>Kota Bima, Nusa Tenggara Barat</p>
+  </section>
 
-    <div class="venue" data-reveal="zoom">
-      <img class="venue__art" src="assets/img/venue.webp" alt="" aria-hidden="true">
-      <h3 class="venue__name" data-field="venueName">Gedung Seni dan Budaya Kota Bima</h3>
-      <p class="venue__addr" data-field="venueAddress">Kota Bima, Nusa Tenggara Barat</p>
-      <a class="btn btn--gold" id="mapBtn" href="#" target="_blank" rel="noopener">Lihat Lokasi</a>
+  <!-- 6 · event details — burgundy band, information on an ivory card -->
+  <section class="sec sec--burgundy" id="event">
+    <span class="deco deco--corner-tr" aria-hidden="true"></span>
+    <p class="eyebrow eyebrow--light" data-reveal>Rangkaian Acara</p>
+    <div class="detail" data-reveal>
+      <dl class="detail__list">
+        <div class="detail__row">
+          <dt>Acara</dt>
+          <dd>Resepsi Pernikahan</dd>
+        </div>
+        <div class="detail__row">
+          <dt>Hari &amp; Tanggal</dt>
+          <dd data-field="dateLong">Sabtu, 12 Desember 2026</dd>
+        </div>
+        <div class="detail__row">
+          <dt>Waktu</dt>
+          <dd data-field="resepsiTime">Pukul 14.00 WITA &ndash; selesai</dd>
+        </div>
+        <div class="detail__row">
+          <dt>Tempat</dt>
+          <dd data-field="venueName">Gedung Seni dan Budaya Kota Bima</dd>
+        </div>
+        <div class="detail__row">
+          <dt>Alamat</dt>
+          <dd data-field="venueAddress">Kota Bima, Nusa Tenggara Barat</dd>
+        </div>
+      </dl>
+      <a class="btn btn--solid" id="mapBtn" href="#" target="_blank" rel="noopener">Lihat Lokasi</a>
     </div>
   </section>
 
-  <div class="ornament" aria-hidden="true"></div>
-
-  <section class="sec sec--gift" id="gift">
-    <img class="gift__art" src="assets/img/gift.webp" alt="" data-reveal="zoom">
-    <h2 class="script script--lg" data-reveal>Amplop Digital</h2>
+  <!-- 7 · digital envelope -->
+  <section class="sec sec--cream" id="gift">
+    <p class="eyebrow" data-reveal>Amplop Digital</p>
+    <h2 class="display display--lg" data-reveal>Tanda Kasih</h2>
     <p class="body" data-reveal>Doa restu Anda adalah hadiah terindah. Namun bila berkenan memberi tanda kasih, kami sediakan kanal berikut.</p>
     <ul class="accounts" id="accounts" data-reveal></ul>
   </section>
 
-  <section class="sec" id="wishes">
-    <h2 class="script script--lg" data-reveal>Ucapan &amp; Doa</h2>
+  <div class="ornament" aria-hidden="true"></div>
+
+  <!-- 8 · ucapan &amp; RSVP -->
+  <section class="sec sec--wishes" id="wishes">
+    <span class="deco deco--corner-bl" aria-hidden="true"></span>
+    <p class="eyebrow" data-reveal>RSVP</p>
+    <h2 class="display display--lg" data-reveal>Ucapan &amp; Doa</h2>
     <form class="wishform" id="wishForm" data-reveal novalidate>
-      <label class="sr-only" for="wName">Nama</label>
-      <input id="wName" name="name" type="text" placeholder="Nama Anda" required maxlength="60" autocomplete="name">
+      <p class="field">
+        <label for="wName">Nama</label>
+        <input id="wName" name="name" type="text" placeholder="Nama Anda" required maxlength="60" autocomplete="name">
+      </p>
 
-      <label class="sr-only" for="wAttend">Konfirmasi kehadiran</label>
-      <select id="wAttend" name="attend" required>
-        <option value="">Konfirmasi kehadiran&hellip;</option>
-        <option value="hadir">Insya Allah hadir</option>
-        <option value="ragu">Masih ragu</option>
-        <option value="absen">Berhalangan hadir</option>
-      </select>
+      <p class="field">
+        <label for="wAttend">Konfirmasi kehadiran</label>
+        <select id="wAttend" name="attend" required>
+          <option value="">Pilih salah satu&hellip;</option>
+          <option value="hadir">Insya Allah hadir</option>
+          <option value="ragu">Masih ragu</option>
+          <option value="absen">Berhalangan hadir</option>
+        </select>
+      </p>
 
-      <label class="sr-only" for="wMsg">Ucapan</label>
-      <textarea id="wMsg" name="message" rows="3" placeholder="Tulis ucapan &amp; doa&hellip;" required maxlength="500"></textarea>
+      <p class="field">
+        <label for="wMsg">Ucapan &amp; doa</label>
+        <textarea id="wMsg" name="message" rows="3" placeholder="Tulis ucapan &amp; doa&hellip;" required maxlength="500"></textarea>
+      </p>
 
-      <button class="btn btn--gold" type="submit">Kirim Ucapan</button>
-      <p class="wishform__note" id="wishNote" role="status"></p>
+      <button class="btn btn--solid" type="submit">Kirim Ucapan</button>
+      <span class="wishform__note" id="wishNote" role="status"></span>
     </form>
     <ul class="wishlist" id="wishList" data-reveal></ul>
   </section>
 
-  <div class="ornament" aria-hidden="true"></div>
-
-  <section class="sec sec--closing" id="closing">
-    <img class="deco deco--bl" src="assets/img/floral-spray.webp" alt="" aria-hidden="true">
-    <p class="body" data-reveal>Merupakan sebuah kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu kepada kami.</p>
-    <p class="lede" data-reveal>Wassalamu&rsquo;alaikum Warahmatullahi Wabarakatuh</p>
+  <!-- 9 · closing — the back page of the invitation -->
+  <section class="sec sec--burgundy sec--closing" id="closing">
+    <span class="deco deco--closing" aria-hidden="true"></span>
+    <p class="body body--light" data-reveal>Merupakan sebuah kehormatan dan kebahagiaan bagi kami, apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan do&rsquo;a restu kepada kami.</p>
+    <p class="lede lede--light" data-reveal>Wassalamu&rsquo;alaikum Warahmatullahi Wabarakatuh</p>
+    <span class="rule rule--light" aria-hidden="true"></span>
     <p class="closing__from" data-reveal>Kami yang berbahagia,</p>
-    <p class="script script--xl" data-reveal data-field="coupleShort">Lifa &amp; Syauqi</p>
+    <p class="display display--xl display--light" data-reveal data-field="coupleShort">Lifa &amp; Syauqi</p>
   </section>
 
   <footer class="foot">
+    <span class="deco deco--footer" aria-hidden="true"></span>
     <p>Dibuat dengan sepenuh hati &middot; <span data-field="coupleShort">Lifa &amp; Syauqi</span></p>
   </footer>
 </main>

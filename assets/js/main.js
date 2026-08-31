@@ -7,6 +7,8 @@ const CONFIG = {
   /* --- the couple ------------------------------------------------------ */
   docTitle:     'Lifa & Syauqi — Undangan Pernikahan',
   coupleShort:  'Lifa & Syauqi',
+  brideShort:   'Lifa',
+  groomShort:   'Syauqi',
   brideName:    'Nur Kholifah',
   brideParents: 'Putri dari Bapak Muhamad Yusuf & Ibu Siti Nurmi',
   groomName:    'Ahmad Syauqi',
@@ -94,7 +96,7 @@ function buildAccounts() {
 
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'btn btn--outline';
+    btn.className = 'btn btn--ghost';
     btn.textContent = 'Salin Nomor';
     btn.addEventListener('click', async () => {
       const done = await copyText(acc.number);
@@ -337,33 +339,6 @@ function wireMusic() {
   };
 }
 
-/* ---------------------------------------------------------------- petals --- */
-
-const PETAL_COUNT = 14;
-
-function wirePetals() {
-  const field = $('#petals');
-  if (!field) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  const frag = document.createDocumentFragment();
-  for (let i = 0; i < PETAL_COUNT; i += 1) {
-    const p = document.createElement('span');
-    const size = 6 + Math.random() * 8;
-    p.className = 'petal';
-    p.style.left = `${Math.random() * 100}%`;
-    p.style.width = `${size}px`;
-    p.style.height = `${size * 1.15}px`;
-    p.style.animationDuration = `${16 + Math.random() * 16}s`;
-    /* negative delay starts each petal mid-fall, so none of them queue up */
-    p.style.animationDelay = `${-Math.random() * 28}s`;
-    p.style.setProperty('--dx', `${(Math.random() * 18 - 9).toFixed(1)}vw`);
-    p.style.setProperty('--rot', `${Math.round(220 + Math.random() * 500)}deg`);
-    frag.append(p);
-  }
-  field.append(frag);
-}
-
 /* ---------------------------------------------------------------- reveal --- */
 
 function wireReveal() {
@@ -448,7 +423,6 @@ document.addEventListener('DOMContentLoaded', () => {
   attempt('calendar', wireCalendar);
   attempt('wishes', wireWishForm);
   attempt('reveal', wireReveal);
-  attempt('petals', wirePetals);
 
   const startMusic = attempt('music', wireMusic);
   attempt('cover', () => wireCover(startMusic));
