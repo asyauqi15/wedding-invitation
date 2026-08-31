@@ -1,19 +1,43 @@
 /* ==========================================================================
    Undangan pernikahan
-
-   The invitation's details are NOT in this file. GitHub Pages is a static
-   host, so a password compared in JavaScript would protect nothing — the
-   source is public. Instead every identifying field lives encrypted in
-   assets/data/invitation.enc and is decrypted in the browser with a key
-   derived from the guest's password. Edit content.json and re-run
-   tools/lock.py to change them.
+   Everything you are likely to change lives in CONFIG below.
    ========================================================================== */
 
 const CONFIG = {
-  /* the locked payload is merged in here once the password checks out */
-  audioSrc: '',            /* drop an mp3 in assets/audio/ and name it here */
-  dataUrl: 'assets/data/invitation.enc',
-  storeKey: 'undangan.unlocked.v1',
+  /* --- the couple ------------------------------------------------------ */
+  docTitle:     'Lifa & Syauqi — Undangan Pernikahan',
+  coupleShort:  'Lifa & Syauqi',
+  brideName:    'Nur Kholifah',
+  brideParents: 'Putri dari Bapak Muhamad Yusuf & Ibu Siti Nurmi',
+  groomName:    'Ahmad Syauqi',
+  groomParents: 'Putra dari Bapak Rendra Farid & Ibu Lindawaty',
+
+  /* --- the day --------------------------------------------------------- */
+  /* Bima is WITA, so the offset is +08:00 — getting this wrong would skew
+     the countdown and the calendar entry by an hour for every guest. */
+  resepsiStart: '2026-12-12T14:00:00+08:00',
+  resepsiEnd:   '2026-12-12T17:00:00+08:00',
+
+  dateLong:     'Sabtu, 12 Desember 2026',
+  dow:          'Sabtu',
+  day:          '12',
+  monthYear:    'Desember 2026',
+  resepsiTime:  'Pukul 14.00 WITA – selesai',
+
+  /* --- the venue ------------------------------------------------------- */
+  venueName:    'Gedung Seni dan Budaya Kota Bima',
+  venueAddress: 'Kota Bima, Nusa Tenggara Barat',
+  mapsUrl:      'https://maps.app.goo.gl/JfqBHkEiUmhTtsmW8',
+
+  /* --- digital envelope ------------------------------------------------ */
+  accounts: [
+    { bank: 'Bank BCA',     number: '389-064-4762',    holder: 'Ahmad Syauqi' },
+    { bank: 'Bank Mandiri', number: '142-00-2067680-4', holder: 'Nur Kholifah' },
+  ],
+
+  /* --- background music ------------------------------------------------ */
+  /* drop an mp3 into assets/audio/ and name it here; empty hides the button */
+  audioSrc: '',
 };
 
 /* ========================================================================= */
@@ -35,112 +59,7 @@ function applyConfig() {
 
   const map = $('#mapBtn');
   if (map && CONFIG.mapsUrl) map.href = CONFIG.mapsUrl;
-}
-
-/* ----------------------------------------------------------------- gate --- */
-
-const enc = new TextEncoder();
-const dec = new TextDecoder();
-
-function fromB64(b64) {
-  const bin = atob(b64);
-  const out = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
-  return out;
-}
-
-/* PBKDF2 params travel with the payload so the two sides cannot drift apart */
-async function unlock(payload, password) {
-  const base = await crypto.subtle.importKey(
-    'raw', enc.encode(password), 'PBKDF2', false, ['deriveKey'],
-  );
-  const key = await crypto.subtle.deriveKey(
-    { name: 'PBKDF2', salt: fromB64(payload.salt), iterations: payload.iter, hash: 'SHA-256' },
-    base,
-    { name: 'AES-GCM', length: 256 },
-    false,
-    ['decrypt'],
-  );
-  /* a wrong password fails GCM's auth tag here rather than yielding garbage */
-  const plain = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: fromB64(payload.iv) }, key, fromB64(payload.ct),
-  );
-  return JSON.parse(dec.decode(plain));
-}
-
-function applyContent(content) {
-  Object.assign(CONFIG, content);
-  if (content.docTitle) document.title = content.docTitle;
-  applyConfig();
-  attempt('accounts', buildAccounts);
-  attempt('countdown', startCountdown);
-}
-
-async function wireGate() {
-  const gate = $('#gate');
-  const form = $('#gateForm');
-  const field = $('#gateKey');
-  const note = $('#gateNote');
-  const btn = $('#gateBtn');
-  if (!gate || !form) return;
-
-  if (!window.crypto || !crypto.subtle) {
-    setText(note, 'Peramban ini tidak mendukung pembuka undangan. '
-                + 'Coba buka lewat tautan https.');
-    return;
-  }
-
-  let payload;
-  try {
-    const res = await fetch(CONFIG.dataUrl, { cache: 'no-cache' });
-    if (!res.ok) throw new Error(res.status);
-    payload = await res.json();
-  } catch {
-    setText(note, 'Gagal memuat undangan. Periksa koneksi Anda.');
-    return;
-  }
-
-  const open = (content) => {
-    applyContent(content);
-    gate.classList.add('is-done');
-    document.body.classList.add('is-unlocked');
-    setTimeout(() => { gate.hidden = true; }, 700);
-  };
-
-  const tryKey = async (password, { quiet = false } = {}) => {
-    if (!password) return false;
-    btn.disabled = true;
-    setText(note, 'Membuka…');
-    try {
-      const content = await unlock(payload, password);
-      try { localStorage.setItem(CONFIG.storeKey, password); } catch { /* private mode */ }
-      open(content);
-      return true;
-    } catch {
-      setText(note, quiet ? '' : 'Kata sandi salah. Silakan coba lagi.');
-      if (!quiet) field.select();
-      return false;
-    } finally {
-      btn.disabled = false;
-    }
-  };
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    tryKey(field.value.trim());
-  });
-
-  /* a shared link can carry the password: index.html?to=Nama#k=sandi */
-  const hashKey = new URLSearchParams(location.hash.slice(1)).get('k');
-  if (hashKey && await tryKey(hashKey, { quiet: true })) {
-    history.replaceState(null, '', location.pathname + location.search);
-    return;
-  }
-
-  /* a guest who already unlocked on this device does not get asked again */
-  let saved = null;
-  try { saved = localStorage.getItem(CONFIG.storeKey); } catch { /* ignore */ }
-  if (saved) await tryKey(saved, { quiet: true });
+  if (CONFIG.docTitle) document.title = CONFIG.docTitle;
 }
 
 /* ---------------------------------------------------------------- guest --- */
@@ -510,7 +429,7 @@ function wireCover(startMusic) {
 function attempt(label, fn) {
   try {
     const result = fn();
-    /* wireGate is async, so a rejection would escape the try block */
+    /* an async step's rejection would otherwise escape the try block */
     if (result && typeof result.catch === 'function') {
       result.catch((err) => console.error(`[undangan] ${label} gagal:`, err));
     }
@@ -522,7 +441,10 @@ function attempt(label, fn) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  attempt('config', applyConfig);
   attempt('guest', applyGuest);
+  attempt('accounts', buildAccounts);
+  attempt('countdown', startCountdown);
   attempt('calendar', wireCalendar);
   attempt('wishes', wireWishForm);
   attempt('reveal', wireReveal);
@@ -530,5 +452,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const startMusic = attempt('music', wireMusic);
   attempt('cover', () => wireCover(startMusic));
-  attempt('gate', wireGate);
 });

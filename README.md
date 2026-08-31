@@ -3,20 +3,13 @@
 A single-page online wedding invitation in HTML, CSS and vanilla JavaScript.
 No build step, no framework, no backend — it runs as static files.
 
-The couple's details are **not in this repository**. They live encrypted in
-`assets/data/invitation.enc` and are decrypted in the guest's browser with a
-password. See [Password](#password) below.
-
 ```
-index.html                  markup for every section
-assets/css/style.css        the whole design system
-assets/js/main.js           behaviour, including the decryption gate
-assets/data/invitation.enc  encrypted details (committed)
-assets/img/                 artwork
-assets/audio/               drop a background track here (optional)
-content.json                plaintext details — GIT-IGNORED, never commit
-tools/lock.py               encrypts content.json -> invitation.enc
-tools/prepare_assets.py     re-stages artwork from its source folder
+index.html                markup for every section
+assets/css/style.css      the whole design system
+assets/js/main.js         CONFIG block + behaviour
+assets/img/               artwork
+assets/audio/             drop a background track here (optional)
+tools/prepare_assets.py   re-stages artwork from its source folder
 ```
 
 ## Running it locally
@@ -27,53 +20,9 @@ python -m http.server 8000
 
 then visit <http://127.0.0.1:8000/>.
 
-**A server is required, not optional.** `crypto.subtle` — which does the
-decryption — is only available in a secure context. `https://` and
-`http://localhost` qualify; opening `index.html` as a `file://` URL does not,
-and the gate will refuse to unlock.
-
-## Password
-
-GitHub Pages serves files and runs no code of its own, so a password compared
-in JavaScript would protect nothing — anyone can read the page source. This
-project encrypts instead:
-
-- `content.json` (plaintext, git-ignored) holds the real names, parents, date,
-  venue and bank accounts.
-- `tools/lock.py` encrypts it with **AES-256-GCM**, using a key derived from
-  the password with **PBKDF2-HMAC-SHA256, 250 000 iterations** and a random
-  16-byte salt.
-- The browser derives the same key with WebCrypto and decrypts in place. A
-  wrong password fails GCM's authentication tag, so it is rejected outright
-  rather than yielding plausible nonsense.
-
-Until someone types the password, the served HTML contains `•••` in place of
-every name, date and address, and the payload is indistinguishable from noise.
-
-### Changing the password or the details
-
-```sh
-python tools/lock.py --password "your-new-password"
-```
-
-Edit `content.json` first if the details changed, then commit the regenerated
-`assets/data/invitation.enc`. **Do not commit `content.json`** — `.gitignore`
-covers it, so leave that entry alone.
-
-### Sharing with guests
-
-Either tell guests the password, or put it in the link so it opens directly:
-
-```
-https://<user>.github.io/<repo>/?to=Bapak%20Andi%20Wijaya#k=your-password
-```
-
-`?to=` sets the name on the cover; `#k=` unlocks silently and is then stripped
-from the address bar. A successful unlock is remembered in `localStorage`, so a
-guest is not asked twice on the same device.
-
-Anyone holding that link holds the password — it is a soft gate for a private
-launch, not per-guest access control.
+Opening `index.html` directly works too, but a server is worth using:
+`navigator.clipboard` (the **Salin Nomor** buttons) needs a secure context and
+falls back to a legacy copy over `file://`.
 
 ## Deploying to GitHub Pages
 
@@ -86,24 +35,29 @@ The site is plain static files, so no workflow is needed:
 
 `.nojekyll` is committed so Pages serves the files as-is.
 
-Note that **GitHub Pages sites are public on the free plan**, even when served
-from a private repository. That is exactly why the content is encrypted rather
-than merely hidden. The page also sends `noindex, nofollow` so it stays out of
-search results.
+Two things learned the hard way:
+
+- **Pages from a private repository needs GitHub Pro.** On the free plan,
+  flipping the repo to private unpublishes the site — and it *deletes the Pages
+  configuration*, so switching back to public does not restore it. Pages has to
+  be enabled again.
+- The invitation is fully public: names, date, venue and the bank account
+  numbers are all in the page source. It sends `noindex, nofollow` so it stays
+  out of search results, but anyone with the URL can read it.
 
 ## Changing the details
 
-Everything guests see comes from `content.json`. Two things are worth knowing:
+Everything guests see comes from the `CONFIG` object at the top of
+`assets/js/main.js`. The same text is also written into `index.html`, so the
+page still reads correctly with JavaScript switched off; `CONFIG` overwrites any
+element carrying a matching `data-field`. Two things are worth knowing:
 
-- **The date is stored twice.** `resepsiStart` / `resepsiEnd` are ISO 8601 with
-  the `+07:00` offset and drive the countdown and the calendar button.
-  `dateLong` / `dow` / `day` / `monthYear` / `resepsiTime` are the
-  human-readable strings. Change both.
-- **The bank account numbers are placeholders.** Replace them before sending
-  the invitation out.
-
-Non-private settings — `audioSrc`, `dataUrl`, `storeKey` — stay in the `CONFIG`
-object at the top of `assets/js/main.js`.
+- **The date is stored twice.** `resepsiStart` / `resepsiEnd` are ISO 8601 and
+  drive the countdown and the calendar button; `dateLong` / `dow` / `day` /
+  `monthYear` / `resepsiTime` are the human-readable strings. Change both.
+- **The offset is `+08:00`, not `+07:00`.** The venue is in Bima, which is
+  WITA. Getting this wrong skews the countdown and the calendar entry by an
+  hour for every guest.
 
 ### Background music
 
@@ -135,10 +89,10 @@ The page is deliberately not a flat wash. Four layers sit behind the content:
 
 | layer | z | what it does |
 |---|---|---|
-| warm base gradient | -4 | `body::before`, plum rather than near-black |
+| warm base gradient | -4 | `body::before`, parchment rather than flat cream |
 | drifting glows | -3 | three blurred `.bg__glow` circles on 26–38s loops |
-| damask lattice | -2 | `body::after`, an inline SVG tile at 7.5% opacity |
-| grain + vignette | -3 | `.bg::after`, soft-light noise that kills banding |
+| damask lattice | -2 | `body::after`, an inline SVG tile at 6% opacity |
+| grain + warm edge | -3 | `.bg::after`, multiplied noise that kills banding |
 
 Petals are built by `wirePetals()` rather than markup, so they can be skipped
 entirely. Each gets a randomised column, size, duration and a **negative**
@@ -146,7 +100,7 @@ animation delay, which starts it mid-fall — otherwise all fourteen would drop
 in formation on load.
 
 Motion is kept slow on purpose: reveals fade up with a 110ms stagger between
-siblings in a section, gilt lettering carries an 11s sheen, sprays sway, and
+siblings in a section, the script headings carry an 11s sheen, sprays sway, and
 opening the cover lifts the card out of the envelope before the cover clears.
 
 **Everything ambient is off under `prefers-reduced-motion: reduce`** — no
@@ -180,7 +134,7 @@ loaded from Google Fonts, so no font files are redistributed here.
 
 ## Browser support
 
-Current Chrome, Edge, Firefox and Safari. Uses `crypto.subtle`,
-`IntersectionObserver`, `:has()`, `text-wrap`, `svh` units and `overflow: clip`.
-Everything except `crypto.subtle` degrades to a plain, readable page on older
-browsers; without it the invitation cannot be unlocked at all.
+Current Chrome, Edge, Firefox and Safari. Uses `IntersectionObserver`,
+`:has()`, `text-wrap`, `svh` units and `overflow: clip` — all of which degrade
+to a plain, readable page on anything older. `prefers-reduced-motion` is
+honoured throughout.

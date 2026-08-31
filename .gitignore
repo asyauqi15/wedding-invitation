@@ -1,8 +1,3 @@
-# The plaintext invitation details. NEVER commit this — assets/data/invitation.enc
-# is the encrypted form and is the only version that belongs in the repo.
-content.json
-
-
 # local scratch
 __pycache__/
 *.pyc
