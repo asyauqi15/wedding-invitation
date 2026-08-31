@@ -70,9 +70,18 @@
   --gold-line:  rgba(180, 154, 98, .62);
   --field-bg:   rgba(255, 255, 255, .6);
 
-  --shell: 30rem;                    /* the invitation reads as one tall card */
-  --pad: clamp(1.35rem, 5.5vw, 2.25rem);
-  --gap-sec: clamp(3.25rem, 11vh, 5rem);
+  /* The page is one flat sheet of ivory and every section is a panel of paper
+     laid on it. The separation is tonal, not lit: three light values a few
+     points apart, no shadow and no elevation anywhere. */
+  --color-paper: #FBF8F1;            /* a shade lighter than the canvas */
+  --card-edge: rgba(41, 40, 32, .05); /* just enough to find the edge */
+  --radius-card: clamp(22px, 6vw, 28px);
+  --gutter: clamp(16px, 4vw, 28px);   /* air between a panel and the page edge */
+  --gap-card: clamp(16px, 4vw, 20px);
+
+  --shell: 30rem;                    /* an elegant reading width, never wider */
+  --pad: clamp(1.4rem, 6vw, 2rem);
+  --gap-sec: clamp(2.75rem, 9vh, 4rem);
   --ease: cubic-bezier(.22, .61, .36, 1);
 
   --f-display: "Playfair Display", "Times New Roman", serif;
@@ -96,7 +105,7 @@ body {
   font-size: clamp(1rem, .95rem + .3vw, 1.1rem);
   line-height: 1.72;
   color: var(--tone);
-  background: var(--color-cream);
+  background: var(--color-ivory);
   overflow-x: clip;
 }
 
@@ -207,8 +216,7 @@ body::after {
   gap: clamp(1.5rem, 5vh, 2.75rem);
   padding: clamp(1.25rem, 4vh, 2.25rem) var(--pad);
   text-align: center;
-  background:
-    radial-gradient(120% 70% at 50% 8%, #FBF8F1 0%, var(--color-ivory) 48%, var(--color-cream) 100%);
+  background: var(--color-ivory);
   transition: opacity .9s var(--ease), transform .9s var(--ease);
 }
 
@@ -384,22 +392,31 @@ body.is-open .cover {
   z-index: 1;
   width: min(100%, var(--shell));
   margin-inline: auto;
-  background: var(--color-ivory);
+  padding-block: var(--gap-card);
   opacity: 0;
   visibility: hidden;
   transition: opacity 1s var(--ease) .25s;
 }
 body.is-open .invite { opacity: 1; visibility: visible; }
 
+/* Every section is a panel of paper: inset from the page edge, generously
+   padded, and clipping its own corner ornaments to the radius. Flat on purpose
+   - the hairline is there to find the edge, not to lift the panel off the page. */
 .sec {
   position: relative;
+  width: calc(100% - 2 * var(--gutter));
+  margin: 0 auto var(--gap-card);
   padding: var(--gap-sec) var(--pad);
+  border: 1px solid var(--card-edge);
+  border-radius: var(--radius-card);
+  background: var(--color-paper);
   text-align: center;
   overflow: hidden;
 }
 
-/* the bands that give the page its rhythm: ivory · olive · ivory · cream ·
-   ivory · burgundy · cream · ivory · burgundy */
+/* the panel faces that give the page its rhythm: paper · olive · paper · cream
+   · paper · burgundy · cream · paper · burgundy. Cream sits a step below the
+   canvas and paper a step above it, so the stack reads without any shadow. */
 .sec--cream { background: var(--color-cream); }
 
 .sec--olive,
@@ -413,8 +430,8 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   --field-bg: rgba(255, 255, 255, .1);
   color: var(--tone);
 }
-.sec--olive    { background: var(--color-olive); }
-.sec--burgundy { background: var(--color-burgundy); }
+.sec--olive    { background: var(--color-olive); border-color: transparent; }
+.sec--burgundy { background: var(--color-burgundy); border-color: transparent; }
 
 /* [data-reveal] eases in as it enters the viewport. --d is set by main.js so
    siblings in one section arrive in sequence rather than all together. */
@@ -528,11 +545,11 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 
 /* the gilt filigree set between the movements of the page. The artwork draws
    its own rule out to both ends, so nothing is added either side of it. */
+/* a breath on the open canvas between two panels, not a filled strip */
 .ornament {
   display: grid;
   place-items: center;
-  padding: clamp(.5rem, 2.5vw, 1rem) var(--pad);
-  background-color: var(--color-ivory);
+  padding: clamp(.6rem, 2.5vw, 1rem) var(--pad);
 }
 .ornament::before {
   content: "";
@@ -576,9 +593,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 
 .sec--olive .arabic {
   margin: 0 0 1.5rem;
-  /* sized to sit inside the padding at 390px — tashkeel makes these lines
-     much wider than their character count suggests */
-  font-size: clamp(1.02rem, 4.5vw, 1.35rem);
+  /* sized to sit inside the panel at 390px — tashkeel makes these lines much
+     wider than their character count suggests */
+  font-size: clamp(.92rem, 4vw, 1.3rem);
   color: var(--color-ivory);
 }
 .verse {
@@ -680,10 +697,9 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 .detail {
   padding: clamp(1.5rem, 6vw, 2rem) clamp(1.15rem, 5vw, 1.75rem);
   background: var(--color-ivory);
-  border-radius: 2px;
-  box-shadow: 0 .7rem 1.8rem rgba(41, 40, 32, .16);
-  /* a light island on the burgundy band, so it takes the page tokens back
-     rather than inheriting the band's */
+  border-radius: 10px;
+  /* a light island inside the burgundy panel, so it takes the page tokens back
+     rather than inheriting the panel's */
   --tone: var(--color-text);
   --tone-soft: rgba(41, 40, 32, .74);
   --accent: var(--color-burgundy);
@@ -802,11 +818,12 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 }
 .wishform .is-invalid { border-color: var(--color-burgundy); }
 
-/* entries are separated by rules rather than stacked as cards — fewer boxes */
+/* Entries are separated by rules rather than stacked as cards - fewer boxes.
+   The list flows rather than scrolling inside its own box: a nested scroll pane
+   is a dashboard pattern, and it clipped the last message mid-sentence. Each
+   guest only ever sees the wishes they wrote themselves, so it stays short. */
 .wishlist {
   display: grid;
-  max-height: 24rem;
-  overflow-y: auto;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -856,11 +873,11 @@ body.is-open .invite { opacity: 1; visibility: visible; }
   color: rgba(245, 240, 230, .78);
 }
 
+/* a colophon on the open canvas, deliberately the quietest thing on the page */
 .foot {
-  padding: 1.75rem var(--pad) 2.5rem;
-  background: var(--color-ivory);
+  padding: 1.5rem var(--pad) 2.75rem;
   text-align: center;
-  font-size: .74rem;
+  font-size: .7rem;
   letter-spacing: .14em;
   color: var(--tone-faint);
 }
@@ -896,8 +913,6 @@ body.is-open .invite { opacity: 1; visibility: visible; }
 
 @media (min-width: 48rem) {
   :root { --shell: 34rem; }
-
-  .invite { box-shadow: 0 0 4rem rgba(41, 40, 32, .13); }
 
   .couple {
     grid-template-columns: 1fr auto 1fr;

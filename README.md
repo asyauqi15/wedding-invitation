@@ -76,34 +76,69 @@ is the romantic accent, and gold is hairlines only. The palette lives in one
 
 | token | value | role |
 |---|---|---|
-| `--color-ivory` | `#F5F0E6` | the page, and type on dark bands |
-| `--color-cream` | `#EDE4D3` | the alternate band, and the ground behind the card |
-| `--color-burgundy` | `#722F37` | names, headings, primary buttons, two bands |
-| `--color-olive` | `#4F5A3A` | the verse band |
+| `--color-ivory` | `#F5F0E6` | the canvas the whole page is printed on |
+| `--color-paper` | `#FBF8F1` | the default panel face, a step above the canvas |
+| `--color-cream` | `#EDE4D3` | the alternate panel face, a step below it |
+| `--color-burgundy` | `#722F37` | names, headings, primary buttons, two panels |
+| `--color-olive` | `#4F5A3A` | the verse panel |
 | `--color-olive-soft` | `#7A8060` | eyebrows, field labels, small caps |
 | `--color-gold` | `#B49A62` | hairline rules and the ampersand, nothing else |
 | `--color-text` | `#292820` | body copy |
 
-**A dark band does not restate its colours.** `.sec--olive` and `.sec--burgundy`
+**A dark panel does not restate its colours.** `.sec--olive` and `.sec--burgundy`
 redefine the contextual tokens (`--tone`, `--accent`, `--hairline`, …) once, and
-everything inside follows. `.detail` — the ivory card sitting on the burgundy
-band — takes the page tokens back the same way.
+everything inside follows. `.detail` — the ivory island inside the burgundy
+panel — takes the page tokens back the same way.
+
+### The panel system
+
+The page is **one flat sheet of ivory**, and every section is a panel of paper
+laid on it — inset from the edge, rounded, generously padded.
+
+| | |
+|---|---|
+| `--gutter` | `clamp(16px, 4vw, 28px)` — air between a panel and the page edge |
+| `--gap-card` | `clamp(16px, 4vw, 20px)` — the gap between two panels |
+| `--radius-card` | `clamp(22px, 6vw, 28px)` |
+| `--shell` | `30rem` — an elegant reading width, never wider |
+
+**The separation is tonal, not lit.** Three light values a few points apart do
+the work: `--color-paper` sits above the canvas, `--color-cream` below it, and a
+`--card-edge` hairline at 5% opacity is there only to find the edge. There is no
+shadow, no gradient and no elevation anywhere in the invitation — the audit
+asserts that, because a drop shadow is the fastest way to turn stationery into a
+dashboard. Accent panels drop the hairline; olive and burgundy separate
+themselves.
+
+Each panel carries `overflow: hidden`, so a corner ornament is clipped to the
+radius and reads as printed on the sheet rather than pasted over it.
+
+The dividers and the footer have no face of their own — they sit on the open
+canvas between panels.
+
+**The envelope is deliberately outside all of this.** It stays a fixed,
+full-screen opening on the same ivory, with no radius and no inset; the panel
+system begins once it has been opened.
 
 ### Rhythm
 
-Sections alternate between decorative and informational so the page breathes:
+Panels alternate between decorative and informational so the page breathes, and
+the accents stay accents — one olive, two burgundy, six light:
 
 ```
-hero      ivory      names, nothing competing
+hero      paper      names, nothing competing
 quote     olive      the verse, deliberately bare
-couple    ivory      editorial, symmetrical, no photographs
+couple    paper      editorial, symmetrical, no photographs
 date      cream      the day and the countdown
-venue     ivory      the architectural engraving, no frame
-event     burgundy   details on an ivory card
+venue     paper      the architectural engraving, no frame
+event     burgundy   details on an ivory island
 gift      cream      account numbers, obvious copy buttons
-wishes    ivory      RSVP, styled as stationery
+wishes    paper      RSVP, styled as stationery
 closing   burgundy   the back page
 ```
+
+Four of the nine carry no ornament at all. That is the point: the decoration is
+selective, and a clean panel is a finished panel.
 
 ### Typography
 
@@ -234,6 +269,12 @@ sees only what they themselves wrote, and nothing reaches you.
 **To actually collect RSVPs you need a backend.** The submit handler in
 `wireWishForm()` is the single place to POST to a Google Apps Script endpoint,
 a form service, or your own API.
+
+The list flows rather than scrolling inside its own box. It used to be capped at
+`24rem` with `overflow-y: auto`, which clipped the last message mid-sentence once
+the panel narrowed — and a nested scroll pane is a dashboard pattern, not
+stationery. Since each guest only ever sees the wishes they wrote themselves, the
+list stays short on its own.
 
 ## Artwork provenance
 
