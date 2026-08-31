@@ -8,6 +8,9 @@ Sources
 
 Typefaces are not copied: every face the template uses is on Google Fonts and
 is linked from the stylesheet instead.
+
+venue.webp is deliberately NOT staged here — it is a rendering of the real
+venue, cut out by tools/make_venue.py. Re-adding it to COPY would clobber it.
 """
 import os
 import shutil
@@ -27,7 +30,6 @@ COPY = {
     'envelope-cover.webp':      'envelope-flap.webp',
     'flower2-decoration.webp':  'floral-spray.webp',
     'paper.webp':               'paper.webp',
-    'castle-background.webp':   'venue.webp',
     'cake.webp':                'icon-cake.webp',
     'minimalism_darkred.webp':  'gift.webp',
 }

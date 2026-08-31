@@ -123,11 +123,22 @@ a form service, or your own API.
 
 ## Artwork
 
-The burgundy envelope, floral spray, paper stock, venue engraving and icons
-come from the ChungDoi *Minimalism Dark Red* template, staged from a local
-download with `python tools/prepare_assets.py` (set `CHUNGDOI_DIR` if the
-folder moved). **Check your licence with ChungDoi before publishing this
-publicly** — a GitHub Pages site is public.
+The burgundy envelope, floral spray, paper stock and icons come from the
+ChungDoi *Minimalism Dark Red* template, staged from a local download with
+`python tools/prepare_assets.py` (set `CHUNGDOI_DIR` if the folder moved).
+**Check your licence with ChungDoi before publishing this publicly** — a
+GitHub Pages site is public.
+
+`venue.webp` is a rendering of the real venue, not template art. It arrives on
+a dark vignette, so `tools/make_venue.py` mattes the building out and fades the
+plaza into the paper:
+
+```sh
+python tools/make_venue.py "path/to/render.png"
+```
+
+It is left out of `prepare_assets.py` on purpose — staging it from the template
+folder again would overwrite the real venue.
 
 Typefaces — Alex Brush, Cormorant Garamond, Playfair Display and Amiri — are
 loaded from Google Fonts, so no font files are redistributed here.
