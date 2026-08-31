@@ -232,7 +232,11 @@ img { max-width: 100%; display: block; }
   display: grid;
   place-items: center;
   padding: var(--pad);
-  background: radial-gradient(120% 70% at 50% 8%, rgba(107, 44, 55, .42), transparent 70%);
+  /* a scrim over the cover so the gate reads as one screen, not an overlay */
+  background:
+    radial-gradient(120% 70% at 50% 8%, rgba(107, 44, 55, .42), transparent 70%),
+    rgba(24, 9, 14, .72);
+  backdrop-filter: blur(7px);
   transition: opacity .6s var(--ease);
 }
 .gate.is-done { opacity: 0; pointer-events: none; }
